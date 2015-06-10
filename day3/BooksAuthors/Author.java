@@ -1,0 +1,40 @@
+package BooksAuthors;
+
+public class Author{
+	private String name;
+	private String email;
+	private char gender;
+
+	Author(String name, String email, char gender){
+		this.name=name;
+		this.email=email;
+		this.gender= gender;
+	}
+
+	public String getName(){
+		return name;
+	}
+	public String getEmail(){
+	 	return email;
+	}
+	public void setEmail(String email){
+		this.email=email;
+	}
+	public char getGender(){
+		return gender;
+	}
+
+	public String toDisplay(){
+		String str= new String();
+		str= name+" "+gender+" at "+email;
+		return str;
+	}
+	public static void main(String[] args) throws Exception{
+		Author newAuthor= new Author("R.K. Narayan", "rknarayan@gmail.com", 'M');
+		System.out.println(newAuthor.toDisplay());
+		newAuthor.setEmail("narayan@gmail.com");
+		System.out.println("Email changed");
+		System.out.println(newAuthor.toDisplay());
+	}
+
+}
