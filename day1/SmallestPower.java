@@ -8,17 +8,25 @@ public class SmallestPower{
 		int x= Integer.parseInt(br.readLine());
 		System.out.println("Enter y");
 		int y= Integer.parseInt(br.readLine());
-		int a=0;
+		int a=1;
 		//to find the smallest power of x that is greater than y.
 		if ((x<=0) || (y<=0)){
 			System.out.println("Not applicable");
-			a=-1;
 		}
 		else {
-			while(Math.pow(x,a)<y){
+			while(powCalc(x,a)<y){
 			a=a+1;
 			}
 			System.out.println("The smallest power of "+x+" that is greater than "+y+" is "+ a);
 		}
-}
+	}
+
+	private static int powCalc(int x, int a){
+		int y=1;
+		int i;
+		for(i=0;i<a; i++){
+			y=x*y;
+		}
+		return y;
+	}
 }
