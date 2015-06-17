@@ -30,8 +30,8 @@ public class Factorial{
 	public String toString(){
 		Integer n=lowerLimit;
 		String str="";
+		InnerFactorial obj=iterator();
 		while(n<=upperLimit){
-			InnerFactorial obj=iterator();
 			//System.out.println("n: "+n+"fact(n): "+obj.factorial(n));
 			str=str+String.valueOf(obj.factorial(n));
 			if(n!=upperLimit){

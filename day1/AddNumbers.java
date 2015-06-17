@@ -12,5 +12,6 @@ public class AddNumbers{
 		xor= x^y;
 		ior= x|y;
 		System.out.println("Xor= "+xor+" Ior= " +ior);
+        System.out.println("Hello");
 	}
 }

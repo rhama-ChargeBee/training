@@ -1,7 +1,33 @@
 import java.io.Console;
 
+class ClassDemo{
+	int i;
+	void  method(){
+		class LocalClass{
+			LocalClass(){
+				System.out.println("Local Class");
+			}
+		}
+		LocalClass obj= new LocalClass();
+		InnerClass obj2= new InnerClass();
+
+	}
+	class InnerClass{
+			InnerClass(){
+			System.out.println("Inner class");
+		}
+	}
+	class InnerClass1{
+                InnerClass1(){
+                        System.out.println("Inner class");
+                }
+        }
+}
+
 public class ArrayRev{
 	public static void main(String[] args) throws Exception{
+		ClassDemo obj= new ClassDemo();
+		obj.method();
 		Console cons= System.console(); //cons.readline();
 		int row, col,i,j;
 		char rotation;
