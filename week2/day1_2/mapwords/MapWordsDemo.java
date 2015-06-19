@@ -6,9 +6,6 @@ public class MapWordsDemo{
 	public static void main(String[] args){
 		ArrayList <String> givenList= new ArrayList <String> ();
 		addWords(givenList);
-		for(String word: givenList){
-			System.out.println(word);
-		}
 		MapWords obj=new MapWords(givenList);
 		obj.display();
 	}

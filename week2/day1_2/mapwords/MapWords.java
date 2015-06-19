@@ -36,9 +36,13 @@ public class MapWords{
 		//System.out.println("Test listAllPrefixes");
 		int i;
 		int len= word.length();
+		checkArray(word.substring(0,3));
+		/* 
+		//Include the below loop and comment the above line to list all prefixes and not just prefixes of length 3
 		for(i=len;i>0;i--){
 			checkArray(word.substring(0,i));
 		}
+		*/
 	}
 
 	private void createMap(){
@@ -52,6 +56,8 @@ public class MapWords{
 		System.out.println("Mapping Words");
 		//Map<String, String> treeMap = new TreeMap<String, String>(map);
 		for(String key: map.keySet()){
+
+					
 			System.out.print(key+"\t");
 			for(String value: map.get(key)){
 				System.out.print(value+" ");
