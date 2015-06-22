@@ -1,33 +1,21 @@
 import java.util.Scanner;
 
-class CompoundInterest{
-	float p,r,ci;
-	int n;
-	CompoundInterest(float pr, int ny, float rate){
-		p=pr;
-		n=ny;
-		r=rate;
+public class InterestCalc{
+	private static float calcSi(float p,int n,float r){
+		return (p*n*r)/100;
 	}
-	float getValue(){
-		calcCi();
-		return ci;
-	}
-	float calcSi(float pr,int ny,float rate){
-		return (pr*ny*rate)/100;
-	}
-	void calcCi(){
+	private static float calcCi(float p, int n, float r){
+		float ci;
 		float sum=p;
 		int i;
 		for(i = 1; i <= n; i++){
 			sum = sum + calcSi(sum,1,r);
 		}
 		ci = sum - p;
-	}	
-}
-
-public class InterestCalc{
+		return ci;
+	}
 	public static void main (String[] args) throws Exception{
-	    	Scanner scan = new Scanner(System.in);
+	    Scanner scan = new Scanner(System.in);
 		float p, r, si, ci;
 		int n,i;
 		System.out.print("Enter the principle(in INR): ");
@@ -37,8 +25,7 @@ public class InterestCalc{
 		System.out.print("Enter the Rate of Interest(in percentage): ");
 		r= scan.nextFloat();
 		si= (p*n*r)/100;
-		CompoundInterest obj= new CompoundInterest(p,n,r);
-		ci=obj.getValue();
+		ci=calcCi(p,n,r);
 		System.out.println("Simple Interest is Rs."+si);
 		System.out.println("Compound Interest is Rs."+ci);
 	}
