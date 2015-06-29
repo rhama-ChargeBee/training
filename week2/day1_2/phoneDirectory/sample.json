@@ -1,0 +1,31 @@
+{
+	"Directory":[
+		{
+			"Name": "Brightn Wayn",
+			"Address": "Chennai",
+			"Phone":{
+				"Mobile": 1234567890,
+				"Home": 1212121212,
+				"Work": 2121212121
+			}
+		},
+		{
+			"Name": "Donald",
+			"Address": "Warner Tower",
+			"Phone": {
+				"Mobile": 1020304050,
+				"Home": 2040302010,
+				"Work": 1231231234
+			}
+		},
+		{
+			"Name": "Bruce Light",
+			"Address": "Gothem City",
+			"Phone": {
+				"Mobile": 1213214323,
+				"Home": 1342345234,
+				"Work": 1232343456
+			}
+		}
+	]
+}
