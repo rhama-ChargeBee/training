@@ -6,12 +6,12 @@ import java.io.*;
 
 
 public class WordIndex{
-	BufferedReader inputFile;
-	String searchWord;
-	String inputFileName;
-	Map <Integer, ArrayList <Integer> > words= new HashMap <Integer, ArrayList <Integer> > ();
+	private BufferedReader inputFile;
+	private String searchWord;
+	private String inputFileName;
+	private Map <Integer, ArrayList <Integer> > words= new HashMap <Integer, ArrayList <Integer> > ();
 
-	WordIndex(String file, String searchWord){
+	public WordIndex(String file, String searchWord){
 		this.searchWord=searchWord;
 		inputFileName=file;
 		try{	
@@ -44,6 +44,8 @@ public class WordIndex{
 			}	
 		}catch(IOException e){
 			System.err.println(e);
+		}finally{
+			inputFile.close();
 		}
 		
 	}

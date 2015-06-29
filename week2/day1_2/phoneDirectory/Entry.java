@@ -6,7 +6,7 @@ public class Entry{
 	private String name;
 	private String address;
 	private Map <String, Integer> phoneNumber;
-	Entry(String name, String address, int mobile, int home, int work){
+	public Entry(String name, String address, int mobile, int home, int work){
 		this.name=name;
 		this.address=address;
 		phoneNumber=new HashMap <String, Integer> ();

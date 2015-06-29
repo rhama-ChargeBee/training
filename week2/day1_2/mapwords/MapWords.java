@@ -5,7 +5,7 @@ import java.util.*;
 public class MapWords{
 	private Map <String, TreeSet <String>> map;
 	private ArrayList <String> givenList;
-	MapWords(ArrayList <String> givenList){
+	public MapWords(ArrayList <String> givenList){
 		this.givenList=givenList;
 		map= new TreeMap <String, TreeSet <String>> ();
 		//System.out.println("Test Constructor");

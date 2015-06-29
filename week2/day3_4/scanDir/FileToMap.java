@@ -11,7 +11,7 @@ public class FileToMap extends SimpleFileVisitor<Path> {
 
         private Map <String, ArrayList <String> > allFiles;
 
-        FileToMap() {
+        public FileToMap() {
         	allFiles= new HashMap <String, ArrayList <String>> ();
         }
 

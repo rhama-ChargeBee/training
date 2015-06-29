@@ -12,10 +12,10 @@ import static java.nio.file.StandardCopyOption.*;
 //Copies files from a given directory and subdirectories into a single directory.
 public class FileToNewDir extends SimpleFileVisitor<Path> {
 
-        HashSet <String> allFiles;
-        String newDirString;
+        private HashSet <String> allFiles;
+        private String newDirString;
 
-        FileToNewDir(Path newDir) {
+        public FileToNewDir(Path newDir) {
             allFiles= new HashSet <String> ();
             this.newDirString= newDir.toString();
 

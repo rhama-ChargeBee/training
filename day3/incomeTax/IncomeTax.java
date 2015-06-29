@@ -1,38 +1,6 @@
+package incomeTax;
+
 import java.io.Console;
-class Employee{
-	private String name;
-	private boolean gender;
-	private double taxableIncome;
-	private double taxAmount;
-
-	Employee(String name, boolean gender, double taxableIncome){
-		this.name=name;
-		this.gender=gender;
-		this.taxableIncome=taxableIncome;
-	}
-
-	void setTaxableIncome(double val){
-		taxableIncome=val;
-	}
-	void setTaxAmount(double val){
-		taxAmount=val;
-	}
-	String getName(){
-		return name;
-	}
-	boolean getGender(){
-		return gender;
-	}
-	double getTaxAmount(){
-		return taxAmount;
-	}
-	double getTaxableIncome(){
-		return taxableIncome;
-	}
-	void display(){
-		System.out.println("["+name+"] | ["+(gender? "male":"female")+"] | ["+taxableIncome+"] | ["+taxAmount+"]");
-	}
-}
 
 public class IncomeTax{
 	private static Employee calculateTax(Employee emp){
@@ -49,6 +17,7 @@ public class IncomeTax{
 		emp.setTaxAmount(taxValue);
 		return emp;
 	}
+	
 	public static void main(String[] args) throws Exception{
 		Console cons= System.console();
 		String name;

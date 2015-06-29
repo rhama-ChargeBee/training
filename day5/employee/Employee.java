@@ -7,7 +7,7 @@ public class Employee{
 	private float salary;
 	private int age;
 
-	Employee(String name, float salary, int age){
+	public Employee(String name, float salary, int age){
 		this.name=name;
 		this.salary=salary;
 		this.age=age;

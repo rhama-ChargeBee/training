@@ -6,7 +6,7 @@ import java.io.*;
 public class Factorial{
 	private Integer lowerLimit;
 	private Integer upperLimit;
-	Factorial(Integer lowerLimit, Integer upperLimit){
+	public Factorial(Integer lowerLimit, Integer upperLimit){
 		this.lowerLimit=lowerLimit;
 		this.upperLimit= upperLimit;
 	}

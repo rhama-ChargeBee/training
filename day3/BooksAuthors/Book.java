@@ -8,14 +8,14 @@ public class Book{
 	private Double price;
 	private int qtyInStock=0;
 
-	Book(String name, Author[] authors, double price, int qtyInStock){
+	public Book(String name, Author[] authors, double price, int qtyInStock){
 		this.name=name;
 		this.authors=authors;
 		this.price= price;
 		this.qtyInStock= qtyInStock;
 
 	}
-	Book(String name, Author author, double price, int qtyInStock){
+	public Book(String name, Author author, double price, int qtyInStock){
 		Author[] temp=new Author[1];
 		temp[0]=author; 
 		this.name=name;

@@ -5,7 +5,7 @@ import java.io.*;
 
 public class StringMap{
 	private Map <String, List <String>> map;
-	StringMap(){
+	public StringMap(){
 		 map= new HashMap <String, List <String>>();
 	}
 

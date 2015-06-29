@@ -6,10 +6,10 @@ import java.io.*;
 
 
 public class WordCount{
-	Scanner inputFile;
-	Map <String, Integer> words= new HashMap <String, Integer> ();
+	private Scanner inputFile;
+	private Map <String, Integer> words= new HashMap <String, Integer> ();
 
-	WordCount(String file){
+	public WordCount(String file){
 		try{	
 			inputFile= new Scanner(new BufferedReader( new FileReader(file)));
 		} catch(FileNotFoundException e){
@@ -34,6 +34,7 @@ public class WordCount{
 			String key= inputFile.next();
 			insertInMap(key);
 		}
+		inputFile.close();
 	}
 
 	public void putInFile(){
@@ -55,7 +56,7 @@ public class WordCount{
     		pw.close();
     	} catch(IOException e){
     		System.err.println(e);
-    	} 
+		}
     	
 	}
 

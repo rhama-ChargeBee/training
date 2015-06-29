@@ -10,11 +10,11 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 public class RemoveDuplicates{
-	CSVParser recordsParser; 
-	List <CSVRecord> recordsList;
-	CSVFormat csvFileFormat;
+	private CSVParser recordsParser; 
+	private List <CSVRecord> recordsList;
+	private CSVFormat csvFileFormat;
 
-	RemoveDuplicates(String file){
+	public RemoveDuplicates(String file){
 		try{
 			FileReader input= new FileReader(file);
 			csvFileFormat = CSVFormat.DEFAULT.withSkipHeaderRecord();

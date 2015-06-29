@@ -5,7 +5,7 @@ import java.io.*;
 
 public class PhoneDirectory{
 	private ArrayList <Entry> directory;
-	PhoneDirectory(ArrayList <Entry> directory){
+	public PhoneDirectory(ArrayList <Entry> directory){
 		this.directory=directory;
 	}
 
