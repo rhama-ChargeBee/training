@@ -12,7 +12,7 @@ class Cow extends Mammal{
 		id++;
 		name="Cow"+id;
 	}
-	String getName(){
+	public String getName(){
 		return name;
 	}
 }

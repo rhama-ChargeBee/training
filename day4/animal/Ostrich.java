@@ -12,7 +12,7 @@ class Ostrich extends Bird{
 		id++;
 		name="Ostrich"+id;
 	}
-	String getName(){
+	public String getName(){
 		return name;
 	}
 }

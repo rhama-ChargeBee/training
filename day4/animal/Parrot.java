@@ -12,7 +12,7 @@ class Parrot extends Bird{
 		id++;
 		name="Parrot"+id;
 	}
-	String getName(){
+	public String getName(){
 		return name;
 	}
 }
