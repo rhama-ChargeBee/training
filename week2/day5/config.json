@@ -1,0 +1,11 @@
+{	"Headers":["Customer Id","Subscription Id","Invoice Number","Invoice Date","Start Date","Amount","Status","Paid On","Next Retry","Refunded Amount","Recurring","First Invoice","Customer First Name","Customer Last Name","Customer Email","Customer Company","Tax Total"],
+	"Invoice Date": "Date",
+	"Start Date": "Date",
+	"Amount": 1e-2,
+	"Refunded Amount":1e-1,
+	"Tax Total": 1e-2,
+	"Customer First Name": "Map",
+	"Customer Last Name": "Map",
+	"Customer Email": "Map",
+	"Customer Company": "Map"
+}
