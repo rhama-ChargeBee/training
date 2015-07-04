@@ -15,7 +15,7 @@ public class SmallestPower{
 		}
 		else {
 			while(powCalc(x,a)<y){
-			a=a+1;
+				a=a+1;
 			}
 			System.out.println("The smallest power of "+x+" that is greater than "+y+" is "+ a);
 		}
@@ -23,8 +23,7 @@ public class SmallestPower{
 
 	private static int powCalc(int x, int a){
 		int y=1;
-		int i;
-		for(i=0;i<a; i++){
+		for(int i=0;i<a; i++){
 			y=x*y;
 		}
 		return y;
