@@ -5,21 +5,19 @@ import java.util.*;
 
 public class EmployeeDemo{
 	public static void main(String[] args){
-		int n1,n2;
-		int i;
 		Console cons=System.console();
-		List <Employee> empList= new ArrayList();
-		n1=Integer.parseInt(cons.readLine("Total no of emplyees: "));
-		for(i=0;i<n1;i++){
+		List <Employee> empList= new ArrayList <Employee> ();
+		int n1=Integer.parseInt(cons.readLine("Total no of emplyees: "));
+		for(int i=0;i<n1;i++){
 			System.out.println("Employee "+(i+1));
 			getValue(empList);
 		}
 		System.out.println("\nPick a field to sort: ");
 		System.out.println("1.Name\n2.Age\n3.Salary");
-		n2=Integer.parseInt(cons.readLine());
+		int n2=Integer.parseInt(cons.readLine());
 		System.out.println("\nSorting...");
 		sortArray(empList, n2);
-		for(i=0;i<n1;i++){
+		for(int i=0;i<n1;i++){
 			empList.get(i).display();
 		}
 	}
@@ -45,13 +43,10 @@ public class EmployeeDemo{
 	}
 
 	private static void getValue(List <Employee> obj){
-		String name;
-		int age;
-		float salary;
 		Console cons=System.console();
-		name=cons.readLine("Name: ");
-		age=Integer.parseInt(cons.readLine("Age: "));
-		salary=Float.parseFloat(cons.readLine("Salary: "));
+		String name=cons.readLine("Name: ");
+		int age=Integer.parseInt(cons.readLine("Age: "));
+		float salary=Float.parseFloat(cons.readLine("Salary: "));
 		obj.add(new Employee(name, salary, age));
 
 	}
