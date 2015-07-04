@@ -19,8 +19,10 @@ public class InterestCalc{
 		int n= scan.nextInt();
 		System.out.print("Enter the Rate of Interest(in percentage): ");
 		float r= scan.nextFloat();
+
 		float si= calcSi(p,n,r);
 		float ci=calcCi(p,n,r);
+
 		System.out.println("Simple Interest is Rs."+si);
 		System.out.println("Compound Interest is Rs."+ci);
 	}

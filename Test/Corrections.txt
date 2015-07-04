@@ -4,8 +4,8 @@ Employee: declare local variables inside paranthesis. use ternary operator
 
 DAY4: Service station: invoice total, invoice id
 
-DAY5: employee al implement java.
-	  factorial.java
+DAY5: employee al implement lambda expressions	DONE
+	  factorial.java							DONE
 	  mobile anonymous inner classes.
 
-Week2: day1_2:  substring maping
+Week2: day1_2:  substring maping	DONE
