@@ -18,8 +18,7 @@ public class IncomeTax{
 		boolean gender;
 		double income;
 		Employee[] emp= new Employee[3];
-		int i;
-		for(i=0; i< emp.length; i++){
+		for(int i=0; i< emp.length; i++){
 			System.out.println("Employee...");
 			name=cons.readLine("Enter the name: ");
 			gender= (cons.readLine("Gender(m/f): ").charAt(0) == 'm') ? true: false;
@@ -29,7 +28,7 @@ public class IncomeTax{
 			System.out.println();
 		}
 		System.out.println("\nPrinting all employees");
-		for(i=0; i<emp.length; i++){
+		for(int i=0; i<emp.length; i++){
 			emp[i].display();
 		}
 	}

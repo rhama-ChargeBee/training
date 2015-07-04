@@ -21,7 +21,7 @@ public class Animal{
 		this.class1= class1;
 	}
 	
-	public void printDetails(){
+	public void toString(){
 		System.out.println("Name: " +name+ "\nSpecies: "+species+ "\nOrder: "+order+"\nClass: "+class1);
 	}
 
@@ -30,18 +30,18 @@ public class Animal{
 		System.out.println("Default value");
 		obj1.printDetails();
 		Console cons= System.console();
-		String name, species, order;
 		char flag='y';
 		while(flag == 'y'){
 			System.out.println("Enter the animal description: ");
-			name=cons.readLine("Name: ");
-			species= cons.readLine("Species: ");
-			order= cons.readLine("Order: ");
+			String name=cons.readLine("Name: ");
+			String species= cons.readLine("Species: ");
+			String order= cons.readLine("Order: ");
 			Animal obj= new Animal(name, species, order);
+			obj.toString();
 			flag=cons.readLine("Do u want to continue??? (y/n)").charAt(0);
-			obj.printDetails();
+			
 		}
-		System.out.println("Exiting");
+		System.out.println("Exiting...");
 
 	}
 }
