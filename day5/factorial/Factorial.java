@@ -1,47 +1,75 @@
 package factorial;
 
 import java.io.*;
+import java.util.*;
 
 
-public class Factorial{
+public class Factorial implements Iterable{
 	private Integer lowerLimit;
 	private Integer upperLimit;
+	private List <Long> factorialList= new ArrayList <Long>();
 	public Factorial(Integer lowerLimit, Integer upperLimit){
 		this.lowerLimit=lowerLimit;
 		this.upperLimit= upperLimit;
 	}
 
-	private class InnerFactorial implements Iterator{
-		public Integer factorial(Integer n){
-			Integer f=1;
-			while(n>0){
-				f=f*n;
-				n=n-1;
+	public Iterator iteratorObject= new Iterator(){
+		private int i=0;
+		public boolean hasNext(){
+			return i<factorialList.size()? true:false;
+		}
+		public Long next(){
+			Long nextVal=null;
+			try{
+				nextVal= factorialList.get(i);
+				i++;
 			}
-			return f;
+			catch(Exception e){
+				i=0;
+				System.err.println(e);
+			}
+			return nextVal;
+		}
+
+		public void remove(){
+			try{
+				factorialList.remove(i);
+			}catch(Exception e){
+				System.err.println(e);
+			}
+		}
+	};
+
+	public Iterator iterator(){
+		return iteratorObject;
+	}
+
+	public void calculateFactorial(){
+		int n=lowerLimit;
+		while(n<=upperLimit){
+			factorialList.add(factorial(n));
+			n++;
 		}
 	}
 
-	private InnerFactorial iterator(){
-		InnerFactorial obj=new InnerFactorial();
-		return obj;
-	}
-	//To override object class, this function has to be public.
-	public String toString(){
-		Integer n=lowerLimit;
-		StringBuilder str="";
-		InnerFactorial obj=iterator();
-		while(n<=upperLimit){
-			//System.out.println("n: "+n+"fact(n): "+obj.factorial(n));
-			str.append( String.valueOf(obj.factorial(n)) );
-			if(n!=upperLimit){
-				str=str+", ";
-			}
-			n++;
+	private Long factorial(int n){
+		Long f=1l;
+		while(n>0){
+			f=f*n;
+			n--;
 		}
-		//System.out.println("str:"+str);
-		return str;
+		return f;
 	}
+
+	public String toString(){
+		StringBuilder str=new StringBuilder();
+		for(Long fact: factorialList){
+			str.append(fact).append(", ");
+		}
+		return str.toString();
+	}
+
+	
 
 	public static void main(String[] args){
 		Console cons=System.console();
@@ -49,6 +77,12 @@ public class Factorial{
 		lowerLimit= Integer.valueOf(cons.readLine("Enter the lower limit: "));
 		upperLimit= Integer.valueOf(cons.readLine("Enter the upper limit: "));
 		Factorial obj= new Factorial(lowerLimit, upperLimit);
+		obj.calculateFactorial();
 		System.out.println("The output is\n"+obj.toString());
+		Iterator iter= obj.iterator();
+		System.out.println("Printing using Iterator...");
+		while(iter.hasNext()){
+			System.out.println(iter.next());
+		}
 	}
 }
