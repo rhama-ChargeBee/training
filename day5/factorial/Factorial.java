@@ -29,11 +29,11 @@ public class Factorial{
 	//To override object class, this function has to be public.
 	public String toString(){
 		Integer n=lowerLimit;
-		String str="";
+		StringBuilder str="";
 		InnerFactorial obj=iterator();
 		while(n<=upperLimit){
 			//System.out.println("n: "+n+"fact(n): "+obj.factorial(n));
-			str=str+String.valueOf(obj.factorial(n));
+			str.append( String.valueOf(obj.factorial(n)) );
 			if(n!=upperLimit){
 				str=str+", ";
 			}

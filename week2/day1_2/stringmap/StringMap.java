@@ -11,7 +11,7 @@ public class StringMap{
 
 	private void insertWord(String word){
 		String len= String.valueOf(word.length());
-		if(!(map.keySet().contains( len ))) {
+		if(!(map.containsKey( len ))) {
 			map.put(len, new ArrayList <String> ());
 		}
 		map.get(len).add(word);
@@ -19,14 +19,13 @@ public class StringMap{
 	public void getValue(){
 
 		Console cons=System.console();
-		int n,i;
-		String word;
-		n=Integer.parseInt(cons.readLine("Enter the number of words: "));
-		for(i=0;i<n;i++){
-			word= new String(cons.readLine("Word"+(i+1)+": "));
+		int n=Integer.parseInt(cons.readLine("Enter the number of words: "));
+		for(int i=0;i<n;i++){
+			String word= new String(cons.readLine("Word"+(i+1)+": "));
 			insertWord(word);
 		}
 	}
+	
 	public void putValue(){
 		int i;
 		List <String> words;

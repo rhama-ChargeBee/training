@@ -9,11 +9,7 @@ class Truck extends Car{
 	}
 
 	public double getSalePrice(){
-		if(weight>2000){
-			return (getRegularPrice() - (getRegularPrice()*0.1));
-		}
-		else{
-			return (getRegularPrice() - (getRegularPrice()*0.2));
-		}
+		return  getRegularPrice() * ( (weight>2000)? 0.9 : 0.8 ) ;
+		
 	}
 }

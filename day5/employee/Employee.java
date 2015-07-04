@@ -27,6 +27,8 @@ public class Employee{
 		System.out.println(name+"\t"+age+"\t"+salary);
 	}
 
+	
+	
 	public Comparator <Employee> objName=new Comparator <Employee>(){
 		public int compare(Employee obj1, Employee obj2){
 			return obj1.getName().compareToIgnoreCase(obj2.getName());

@@ -6,7 +6,7 @@ import java.io.*;
 class Dog extends Mammal{
 	private static int id=0;
 	private String name;
-	Dog(){
+	public Dog(){
 		setWalk(true);
 		setHerb(false);
 		id++;

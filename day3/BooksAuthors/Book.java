@@ -44,26 +44,26 @@ public class Book{
 		this.qtyInStock=qtyInStock;
 	}
 	public String toDisplay(){
-		String str;
-		int i;
-		str= name+" by ";
-		for(i=0; i<authors.length; i++){
-			str= str+ authors[i].getName() +" ("+authors[i].getGender()+") at "+ authors[i].getEmail();
+		StringBuilder str= new StringBuilder(name+"by");
+
+		for(int i=0; i<authors.length; i++){
+			str.append( authors[i].getName());
+			str.append(" (").append(authors[i].getGender()).append(") at ").append(authors[i].getEmail());
+
 			if(i==(authors.length-1)){
-				str=str+".";
+				str.append('. ');
 			}
 			else if(i == (authors.length-2)){
-				str=str+" and ";
+				str.append(" and ");
 			}
 			else{
-				str=str+ ", ";
+				str.append(', ');
 			}
 		}
-		return str;
+		return str.toString();
 	}
 	public void printAuthors(){
-		int i;
-		for(i=0; i<authors.length; i++){
+		for(int i=0; i<authors.length; i++){
 			System.out.println(authors[i].getName());
 		}
 	}
@@ -77,13 +77,12 @@ public class Book{
 	}
 	public static void main(String[] args) throws Exception{
 		Scanner scan= new Scanner(System.in);
-		String bookName,  printStr;
-		double price;
-		int qty;
+		String printStr;
+
 		System.out.println("Enter the info, Book name, qty, price");
-		bookName= scan.nextLine();
-		qty= scan.nextInt();
-		price= scan.nextDouble();
+		String bookName= scan.nextLine();
+		int qty= scan.nextInt();
+		double price= scan.nextDouble();
 		
 		Author auth1= new Author("xxx", "xxx@abc.com", 'M');
 		Author auth2= new Author("yyy", "yyy@abc.com", 'F');

@@ -6,7 +6,7 @@ import java.io.*;
 class Bat extends Mammal{
 	private static int id=0;
 	private String name;
-	Bat(){
+	public Bat(){
 		setWalk(false);
 		setHerb(false);
 		id++;

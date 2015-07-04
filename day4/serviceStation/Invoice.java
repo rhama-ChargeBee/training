@@ -4,10 +4,10 @@ import java.util.*;
 import java.io.*;
 
 class Invoice{
-	private static int id=0;
+	//private static int id=0;
 	private Person owner;
 	private Vehicle vehicle;
-	private float amountTotal;
+	//private float amountTotal;
 	private Person employeeAssigned;
 
 	public void setValues(Person owner, Vehicle vehicle, Person employeeAssigned){

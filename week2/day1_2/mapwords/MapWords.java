@@ -21,10 +21,8 @@ public class MapWords{
 		int prefixLength= prefix.length();
 		for(i=0; i<len; i++){
 			tempWord = givenList.get(i).toLowerCase();
-			if(tempWord.contains(prefixLowerCase)){
-				if(prefixLowerCase.equals(tempWord.substring(0,prefixLength))){
-					tempSet.add(tempWord);
-				}
+			if(prefixLowerCase.equals(tempWord.substring(0,prefixLength))){
+				tempSet.add(tempWord);
 			}
 		}
 		if(tempSet.size() >1){
@@ -32,33 +30,18 @@ public class MapWords{
 		}
 	}
 
-	private void listAllPrefixes(String word){
-		//System.out.println("Test listAllPrefixes");
-		int i;
-		int len= word.length();
-		checkArray(word.substring(0,3));
-		/* 
-		//Include the below loop and comment the above line to list all prefixes and not just prefixes of length 3
-		for(i=len;i>0;i--){
-			checkArray(word.substring(0,i));
-		}
-		*/
-	}
-
 	private void createMap(){
 		//System.out.println("Test createMap");
 		for(String temp: givenList){
-			listAllPrefixes(temp);
+			checkArray(temp.substring(0,3));
 		}
 	}
+
 	public void display(){
 		createMap();
 		System.out.println("Mapping Words");
 		//Map<String, String> treeMap = new TreeMap<String, String>(map);
-		for(String key: map.keySet()){
-
-					
-			System.out.print(key+"\t");
+		for(String key: map.keySet()){System.out.print(key+"\t");
 			for(String value: map.get(key)){
 				System.out.print(value+" ");
 			}

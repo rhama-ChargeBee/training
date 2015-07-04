@@ -6,7 +6,7 @@ import java.io.*;
 class Ostrich extends Bird{
 	private static int id=0;
 	private String name;
-	Ostrich(){
+	public Ostrich(){
 		setWalk(true);
 		setHerb(false);
 		id++;

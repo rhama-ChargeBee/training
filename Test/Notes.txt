@@ -1,0 +1,54 @@
+*clone()
+An object created by clone. i.e obj2=obj1.clone(). the equals will return false unless equals method is overriden like in string. 
+class TempClass{
+	public Object clone() throws CloneNotSupportedException{
+		return (TempClass)super.clone();
+	}
+}
+main(){
+TempClass obj3= (TempClass) ((TempClass) obj1).clone();
+}
+
+transient variables cannot be serialised. Serialize is the process of streaming data byte by byte to a file. this is dome mostly in networking. to prevent certain data from being passed through network, transient is used.
+
+final can be used with a variable, class or a method. var can be initialised in constructors only. final method cannot be overriden. final class cannot be extended. a static final variable can be initialised nly in a static block. Since constructor is never inherited, it cannot be called final. final method is inherited.
+
+finally: A block after try catch block. will be exec no matter wat, even if there is a return statement in either of the blocks.
+
+const: although reserved keyword, it is never used and has no definition
+
+native keyword is applied to a method to indicate that is is in native code and is implemented by Java Native Interface. used to indicate code from other languages. Generally to call a library in other lang from java. or to interact with os (os resources) that can be done by select lang like c.
+
+java does not support unsigned/positiive oly Integers.
+
+float 32bits S EEEEEEEE(8)(9)FFFFFFFFFFFFFFFFFFFFFFF : E is 2**E
+
+double 64bits S EEEEEEEEEEE(11)(12)FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF ---> all math func like sine nd cos return double
+
+The range of a char is 0 to 65,536. ie 16 bits(4 bytes) this is becausechar represents many languages. i.e unicode charecters.
+
+primitive types have a fixed size. since string is not like that, string is not primitive.
+
+java does not support pointers that can be accessed or modified by the programmers.
+
+break, continue and return: Break label is used mostly to exit nested loops. break statement should come inside the label's block or it is error.
+label:{...}
+{loop
+	break label;
+}
+the Above lines will throw an error
+
+label:{
+	label2:{
+	break label1;
+	}
+}
+will come here
+the above code will exit both the loops. The same can be said for continue statement
+
+finalize(): is similar to a destructor. Activities that need to be specifically performed wen the object is destroyed is done here. It is executed only on garbage collection so other ways to free resources should be used not just finalize.
+
+Static cannot use this or super keywords in any circumstatnce. Static block is used if there are any computations that need to be done before initialising the static variable. While overloading, if the calling method has no arguements then the func call is ambiguous.
+
+Var Args
+public void varArgs(String ... str){} and the str can be accessed like a list. method overloading can be done if the arguement is of different type.

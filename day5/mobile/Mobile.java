@@ -40,15 +40,13 @@ public class Mobile{
 		Console cons=System.console();
 
 		public void assignValues(){
-			int i;
-			String name;
 			Random r= new Random();
 			
-			for(i=0;i< numberOfMobiles; i++){
-				name= cons.readLine("Enter name"+(i+1)+": ");
+			for(int i=0;i< numberOfMobiles; i++){
+				String name= cons.readLine("Enter name"+(i+1)+": ");
 				Mobile temp=new Mobile();
 				temp.setName(name);
-				temp.setRemainingCharge(Integer.valueOf( r.nextInt(100) ));
+				temp.setRemainingCharge( r.nextInt(100) );
 				mobileList.add(temp);
 			}
 		}

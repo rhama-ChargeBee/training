@@ -1,3 +1,4 @@
+
 package animal;
 
 import java.util.*;
@@ -5,7 +6,7 @@ import java.io.*;
 
 public class AnimalDemo{
 	public static void main(String[] args) throws Exception{
-		LinkedList <Animal> animals= new LinkedList();
+		ArrayList <Animal> animals= new ArrayList();
 		Console cons=System.console();
 		int n;
 		char ch;

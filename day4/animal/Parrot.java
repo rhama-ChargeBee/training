@@ -6,7 +6,7 @@ import java.io.*;
 class Parrot extends Bird{
 	private static int id=0;
 	private String name;
-	Parrot(){
+	public Parrot(){
 		setWalk(false);
 		setHerb(false);
 		id++;

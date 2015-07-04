@@ -4,14 +4,8 @@ import java.io.Console;
 
 public class IncomeTax{
 	private static Employee calculateTax(Employee emp){
-		int tax;
+		int tax= emp.getGender()? 20:15;
 		double taxValue;
-		if(emp.getGender()){
-			tax=20;
-		}
-		else {
-			tax=15;
-		}
 		taxValue= ((double) (tax) * emp.getTaxableIncome())/100.0d;
 		//System.out.println(taxValue+"*************");
 		emp.setTaxAmount(taxValue);

@@ -19,5 +19,7 @@ public abstract class Animal implements setBool{
 		return isHerb;
 	}
 
+	//public abstract void dummy();
+
 	public abstract String getName();
 }

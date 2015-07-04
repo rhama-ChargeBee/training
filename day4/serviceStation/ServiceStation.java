@@ -114,13 +114,7 @@ public class ServiceStation{
 	}
 
 	private static int setEmpListIndex(int j, int len){
-		if(j==len){
-			j=0;
-		}
-		else{
-			j++;
-		}
-		return j;
+		return (j==len)? j: j+1;
 	}
 
 }

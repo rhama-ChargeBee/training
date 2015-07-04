@@ -1,0 +1,8 @@
+git init --bare <directory> creates a repositary that does not hav a working directory, the changes cannot be pushed or commited. Basically makes the repositary as a storage facility.
+
+git init ---> inside the directory with the repositary name
+git pull <ssh: url> ---> pulls the repositary in the url(get the url from the website)
+
+git help <verb> ---> manuals page
+git <verb> --help ---> manuals page
+man git-<verb> ---> manuals page
