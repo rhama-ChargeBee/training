@@ -4,10 +4,7 @@ import java.util.*;
 import java.io.*;
 
 public class StringMap{
-	private Map <String, List <String>> map;
-	public StringMap(){
-		 map= new HashMap <String, List <String>>();
-	}
+	private Map <String, List <String>> map= new HashMap <String, List <String>>();;
 
 	private void insertWord(String word){
 		String len= String.valueOf(word.length());
@@ -16,8 +13,8 @@ public class StringMap{
 		}
 		map.get(len).add(word);
 	}
-	public void getValue(){
 
+	public void getValue(){
 		Console cons=System.console();
 		int n=Integer.parseInt(cons.readLine("Enter the number of words: "));
 		for(int i=0;i<n;i++){
@@ -27,7 +24,6 @@ public class StringMap{
 	}
 	
 	public void putValue(){
-		int i;
 		List <String> words;
 		System.out.println("\n Mapping words");
 		for( String key: map.keySet() ){

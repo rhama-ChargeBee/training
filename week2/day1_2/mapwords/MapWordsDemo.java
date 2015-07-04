@@ -7,6 +7,7 @@ public class MapWordsDemo{
 		ArrayList <String> givenList= new ArrayList <String> ();
 		addWords(givenList);
 		MapWords obj=new MapWords(givenList);
+		obj.mapWords();
 		obj.display();
 	}
 
