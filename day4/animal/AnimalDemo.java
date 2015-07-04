@@ -6,7 +6,7 @@ import java.io.*;
 
 public class AnimalDemo{
 	public static void main(String[] args) throws Exception{
-		ArrayList <Animal> animals= new ArrayList();
+		ArrayList <Animal> animals= new ArrayList <Animal> ();
 		Console cons=System.console();
 		int n;
 		char ch;

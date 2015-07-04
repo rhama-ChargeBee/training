@@ -9,11 +9,7 @@ class Sedan extends Car{
 	}
 
 	public double getSalePrice(){
-		if(length>20){
-			return (getRegularPrice() - (getRegularPrice()*0.05));
-		}
-		else{
-			return (getRegularPrice() - (getRegularPrice()*0.1));
-		}
+		return getRegularPrice()*(length>20? 0.95:0.9);
 	}
+	
 }
