@@ -1,0 +1,1 @@
+This is a .txtfile inside sample0
