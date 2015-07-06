@@ -9,35 +9,25 @@ import static java.nio.file.FileVisitOption.*;
 
 public class FileToMap extends SimpleFileVisitor<Path> {
 
-        private Map <String, ArrayList <String> > allFiles;
-
-        public FileToMap() {
-        	allFiles= new HashMap <String, ArrayList <String>> ();
-        }
+        private Map <String, ArrayList <String> > allFiles= new HashMap <String, ArrayList <String>> ();
 
 		//Given the path, returns the file name without the extension
         private String getFileWithoutExtension(Path file){
-        	String fileName, name;
-        	int index;
-        	name= file.getFileName().toString();
-        	index = name.lastIndexOf('.');
-        	fileName = name.substring(0,index);
-        	return fileName;
+        	String name= file.getFileName().toString();
+        	int index = name.lastIndexOf('.');
+        	return name.substring(0,index);
         }
 
         //Given the path, returns the extension of the file in that path
         private String getExtension(Path file){
-        	String extension, name;
-        	int index;
-        	name= file.getFileName().toString();
-        	index = name.lastIndexOf('.');
-        	extension = name.substring(index);
-        	return extension;
+        	String name= file.getFileName().toString();
+        	int index = name.lastIndexOf('.');
+        	return name.substring(index);
         }
 
         //Inserts the given key value pair into the Map
         private void insert(String extension, String fileName){
-			if(!(allFiles.keySet().contains( extension ))) {
+			if(!(allFiles.containsKey( extension ))) {
 				allFiles.put(extension, new ArrayList <String> ());
 			}
 			allFiles.get(extension).add(fileName);
@@ -45,11 +35,8 @@ public class FileToMap extends SimpleFileVisitor<Path> {
 
 		//Takes the path as input and finally inserts the extension as the key and the filename as value.
         private void insertInMap(Path file) {
-            String fileName, extension;
-            int index;
-            //System.out.println(file.getFileName().toString());
-            fileName= getFileWithoutExtension(file);
-            extension= getExtension(file);
+            String fileName= getFileWithoutExtension(file);
+            String extension= getExtension(file);
             insert(extension,fileName);
         }
 

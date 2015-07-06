@@ -173,7 +173,7 @@ public class TransformCSV{
 		try{
 			Date date=inputFormatterDate.parse(dateAndTime.substring(0,10));
 			Date time= formatterTime.parse(dateAndTime.substring(11,16));
-			SimpleDateFormat outputFormatterDate= new SimpleDateFormat("dd/MM/yyy");
+			SimpleDateFormat outputFormatterDate= new SimpleDateFormat("dd/MM/yyyy");
 			outputPrinter.print(outputFormatterDate.format(date)+ " " + formatterTime.format(time));
 		}catch(Exception e){
 			System.out.println("\ndateAndTime: "+dateAndTime+"\t"+ dateAndTime.length());
