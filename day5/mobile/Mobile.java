@@ -15,6 +15,7 @@ import java.util.*;
 import java.io.*;
 
 public class Mobile{
+	private static List <Mobile> mobileList= new ArrayList <Mobile>();
 	private String name;
 	private Integer remainingCharge;
 
@@ -34,35 +35,33 @@ public class Mobile{
 		this.name=name;
 	}
 
-	private MobileInterface interfaceObj=new MobileInterface(){
-		List <Mobile> mobileList= new ArrayList();
-		int numberOfMobiles=3;
-		Console cons=System.console();
-
-		public void assignValues(){
+	private static MobileInterface mobileAnonymousObj=new MobileInterface(){
+		public Mobile getMobile(String name){
 			Random r= new Random();
-			
-			for(int i=0;i< numberOfMobiles; i++){
-				String name= cons.readLine("Enter name"+(i+1)+": ");
-				Mobile temp=new Mobile();
-				temp.setName(name);
-				temp.setRemainingCharge( r.nextInt(100) );
-				mobileList.add(temp);
-			}
-		}
-
-		public void printValues(){
-			int i;
-			for(i=0;i< numberOfMobiles; i++){
-				//System.out.println("Index: "+i);
-				mobileList.get(i).name();
-				mobileList.get(i).remainingCharge();
-			}
+			Mobile temp=new Mobile();
+			temp.setName(name);
+			temp.setRemainingCharge(r.nextInt(100));
+			return temp;
 		}
 	};
 
-	public void output(){
-		interfaceObj.assignValues();
-		interfaceObj.printValues();
+	public static void assignValues(int numberOfMobiles){
+		Console cons=System.console();
+		Mobile obj= new Mobile();
+		for(int i=0;i< numberOfMobiles; i++){
+			String name= cons.readLine("Enter name"+(i+1)+": ");
+			mobileList.add( mobileAnonymousObj.getMobile(name) );
+		}
+	}
+	public static void printValues(int numberOfMobiles){
+		for(int i=0;i< numberOfMobiles; i++){
+			mobileList.get(i).name();
+			mobileList.get(i).remainingCharge();
+		}
+	}
+
+	public static void main(String[] args){
+		assignValues(3);
+		printValues(3);
 	}
 }
