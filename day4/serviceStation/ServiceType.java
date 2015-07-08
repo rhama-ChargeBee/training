@@ -9,7 +9,7 @@ public enum ServiceType {
     BUS(30_000f),
     TRUCK(40_000f);
     private float serviceCharge;
-    public ServiceType(float charge){
+    ServiceType(float charge){
     	serviceCharge=charge;
     }
     

@@ -12,22 +12,19 @@ Invoice (name_of_owner,vehicle, amount_total, employee_assigned)
 public class ServiceStation{ 
 	public static void main(String[] args) throws Exception{
 		Console cons= System.console();
-		List <Person> custList= new ArrayList();
-		List <Person> empList= new ArrayList();
-		int i,n,j;
-		
-		char ch;
+		List <Person> custList= new ArrayList <Person>();
+		List <Person> empList= new ArrayList <Person>();
 
 		System.out.println("The services availabe are....");
 		for(ServiceType serv: ServiceType.values()){
 			System.out.println(serv+": "+serv.serviceCharge());
 		}
 
-		n=Integer.parseInt(cons.readLine("Enter the number of employees: "));
+		int n=Integer.parseInt(cons.readLine("Enter the number of employees: "));
 		System.out.println("Enter the list of employees below");
 		Person p=new Person();
 
-		for(i=0;i<n;i++){
+		for(int i=0;i<n;i++){
 			System.out.println("Employee "+ (i+1));
 			p=getPerson(i+1);
 			empList.add(p);
@@ -37,7 +34,8 @@ public class ServiceStation{
 		Invoice invoice= new Invoice();
 		Person p1;
 
-		j=0;
+		int j=0;
+		char ch='y';
 
 		System.out.println("\n*******************************************************************************");
 
@@ -58,11 +56,9 @@ public class ServiceStation{
 
 	private static Person getPerson(int i){
 		Console cons= System.console();
-		String name;
-		int age, contact;
-		name= cons.readLine("Name: ");
-		age= Integer.parseInt(cons.readLine("Age: "));
-		contact= Integer.parseInt(cons.readLine("Contact number: "));
+		String name= cons.readLine("Name: ");
+		int age= Integer.parseInt(cons.readLine("Age: "));
+		long contact= Integer.parseInt(cons.readLine("Contact number: "));
 		Person p=new Person();
 		p.setValues(name, age, contact, i);
 		return p;
@@ -70,14 +66,11 @@ public class ServiceStation{
 	}
 	private static Vehicle getVehicle(){
 		Vehicle vehicle=new Vehicle();
-		int i=1;
 		Console cons= System.console();
-		String brand, colour;
-		ServiceType service;
-		brand= cons.readLine("Brand: ");
-		colour= cons.readLine("Colour: ");
+		String brand= cons.readLine("Brand: ");
+		String colour= cons.readLine("Colour: ");
 		System.out.println("Pick u your Vehicle...");
-		service= setServiceType();
+		ServiceType service= setServiceType();
 		vehicle.setValues(brand,colour,service);
 		return vehicle;
 	}
