@@ -8,4 +8,7 @@ DAY5: employee al implement lambda expressions	DONE
 	  factorial.java							DONE
 	  mobile anonymous inner classes.
 
-Week2: day1_2:  substring maping	DONE
+Week2:  day1_2:  substring maping	DONE
+
+		day3_4:  Json write, redo Map using JSON org; use toString instead of display, date of joining should be timestamp	DONE
+				 Use recursion using File(not Files) and replace file walk tree. check up on file nameing convention DONE 
