@@ -117,15 +117,49 @@ Advanced:
       t1.student_id= t3.student_id
     order by year;
 
-*********************************************************************************************************************************
-
 9->select t1.year, name, quarterly_rating, half_yearly_rating, annual_rating, grade from
-    (select year, student_id, grade, getRating(sum(quarterly)) as quarterly_rating, getRating(sum(half_yearly)) as half_yearly_rating, getRating(sum(annual)) as annual_rating from marks group by year, student_id) as t1 
+    (select year, student_id, grade, 
+    if(sum(quarterly) between 450 and 500,'S',
+        if(sum(quarterly) between 400 and 449, 'A',
+          if(sum(quarterly) between 350 and 400, 'B',
+            if(sum(quarterly) between 300 and 349, 'C',
+              if(sum(quarterly) between 250 and 300, 'D',
+                if(sum(quarterly) between 200 and 249, 'E', 'F')
+              )
+            )
+          )
+        )
+      ) as quarterly_rating, 
+    if(sum(half_yearly) between 450 and 500,'S',
+        if(sum(half_yearly) between 400 and 449, 'A',
+          if(sum(half_yearly) between 350 and 400, 'B',
+            if(sum(half_yearly) between 300 and 349, 'C',
+              if(sum(half_yearly) between 250 and 300, 'D',
+                if(sum(half_yearly) between 200 and 249, 'E', 'F')
+              )
+            )
+          )
+        )
+      ) as half_yearly_rating, 
+    if(sum(annual) between 450 and 500,'S',
+        if(sum(annual) between 400 and 449, 'A',
+          if(sum(annual) between 350 and 400, 'B',
+            if(sum(annual) between 300 and 349, 'C',
+              if(sum(annual) between 250 and 300, 'D',
+                if(sum(annual) between 200 and 249, 'E', 'F')
+              )
+            )
+          )
+        )
+      ) as annual_rating 
+  from marks group by year, student_id) as t1 
   join
     (select id as student_id, name from students) as t2
     where
       t1.student_id= t2.student_id
     order by year;
+
+*********************************************************************************************************************************
 
 create procedure getRating (mark int)
 returns char(1)
