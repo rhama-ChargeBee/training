@@ -1,0 +1,53 @@
+create database if not exists service_station;
+
+ create table ServiceStation (  
+	 	id int unsigned not null auto_increment, 
+	 	name varchar(40) not null, 
+	 	address varchar(100), 
+	 	contact  varchar(10), 
+	 	primary key (id)
+	 	);
+
+ create table Employees (  
+ 		id int unsigned not null auto_increment, 
+ 		name varchar(40) not null, 
+ 		age decimal(3,0) not null, 
+ 		contact  varchar(10), 
+ 		primary key (id)
+ 		);
+
+ create table Customers (  
+ 		id int unsigned not null auto_increment, 
+ 		name varchar(40) not null, 
+ 		age decimal(3,0) not null, 
+ 		contact  varchar(10), 
+ 		emp_id int unsigned not null,  
+ 		primary key (id), 
+ 		foreign key (emp_id) references Employees (id) 
+ 		);
+
+
+ create table vehicles ( 
+ 		id int unsigned not null auto_increment, 
+ 		type char(5) not null, 
+ 		brand varchar(15), 
+ 		colour varchar(15), 
+ 		service_charge decimal(7,2) not null, 
+ 		primary key (id) 
+ 		);
+
+
+create table invoices (
+		id int unsigned not null auto_increment, 
+		name_of_owner varchar(40) not null, 
+		vehicle int unsigned not null, 
+		amount_total decimal(7,2) not null, 
+		employee_assigned int unsigned not null, 
+		primary key (id), 
+		foreign key (vehicle) references vehicles (id), 
+		foreign key (employee_assigned) references Employees (id) 
+		);
+
+drop table invoices;
+
+drop database service_station;

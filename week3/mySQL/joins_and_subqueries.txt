@@ -1,0 +1,50 @@
+Marks join students:
+->select marks.*, students.name from marks join students 
+    where 
+        marks.annual is null and 
+        marks.student_id = students.id ;
+
+->select students.name, marks.subject_id, marks.year from marks join students 
+    where 
+        marks.student_id = students.id and 
+        marks.annual is null and 
+        marks.year = 2005;
+
+->select students.name, marks.subject_id, marks.year from marks join students 
+    where 
+      marks.student_id = students.id and 
+      (
+        annual is null xor half_yearly is null xor quarterly is null
+      );
+
+->select students.name, marks.subject_id, year, quarterly, half_yearly, annual
+   from marks join students 
+    where 
+      marks.student_id = students.id and 
+      (
+        quarterly > 90 and annual > 90 and half_yearly > 90
+      );
+
+->select students.name, marks.subject_id, 
+  (
+    ( sum(quarterly) +sum(half_yearly) + sum(annual) ) / 
+    (count(quarterly) + count(half_yearly) + count(annual))
+  ) as average , year
+    from marks join students 
+    where 
+      marks.student_id = students.id
+    group by 
+      year,subject_id;
+
+->select students.name, marks.subject_id, 
+  (
+    ( sum(quarterly) +sum(half_yearly) + sum(annual) ) / 
+    (count(quarterly) + count(half_yearly) + count(annual))
+  ) as average , year
+    from marks join students 
+    where 
+      marks.student_id = students.id
+    group by 
+      year,subject_id
+    having
+      year between 2003 and 2004;

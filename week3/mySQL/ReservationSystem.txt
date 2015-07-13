@@ -1,0 +1,67 @@
+create table Trains (
+		TrainNo int unsigned not null,
+		TrainName char(50) not null default 'train'
+		primary key (TrainNo)
+		);
+
+create table Coaches (
+		CoachCode int unsigned not null,
+		CostPerKm decimal(5,2) default 0,
+		primary key (TrainNo)
+		);
+
+create table Stations ( 
+		StationId int unsigned not null, 
+		StationCode char(5) not null, 
+		primary key (StationID) 
+		);
+
+create table Routes ( 
+		RouteId int unsigned not null, 
+		OriginStationId int unsigned not null,  
+		DestinationStationId int unsigned not null, 
+		DistanceInKms decimal(8.2), 
+		primary key (RouteId), 
+		Foreign key (OriginStationId) references Stations (StationId) on update cascade on delete cascade, 
+		Foreign key (DestinationStationId) references Stations (StationId) on update cascade on delete cascade 
+		);
+
+create table TrainRouteMaps ( 
+		RouteId int unsigned not null, 
+		TrainNo int unsigned not null, 
+		ArrivalTime TIME, 
+		DepartureTime TIME,  
+		DurationInMins int unsigned, 
+		primary key (RouteId, TrainNo), 
+		foreign key (RouteId) references Routes (RouteId), 
+		foreign key (TrainNo) references Trains (TrainNo) 
+		);
+
+create table TrainCoaches (
+		TrainNo int unsigned,
+		CoachCode int unsigned,
+		NoOfSeats int unsigned,
+		foreign key (TrainNo) references Trains (TrainNo),
+		foreign key (CoachCode) references Coaches (CoachCode)
+		);
+
+create table Bookings ( 
+		BookingRefNo int unsigned not null, 
+		RouteId int unsigned,  
+		TrainNo int unsigned,  
+		CoachCode int unsigned, 
+		DateOfJourney date not null, 
+		DateOfBooking date, 
+		NoOfTickets int unsigned, 
+		primary key (BookingRefNo), 
+		foreign key (RouteId) references TrainRouteMaps (RouteId), 
+		foreign key (TrainNo) references TrainRouteMaps (RouteId), 
+		foreign key (CoachCode) references Coaches (CoachCode) 
+		);
+
+create table Users (
+		UserId int unsigned not null,
+		LoginId int unsigned not null,
+		LPassword varchar(20) not null,
+		primary key (UserId)
+		);

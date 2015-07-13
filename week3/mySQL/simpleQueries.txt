@@ -1,0 +1,50 @@
+Students:
+->select * from students;
+
+->select * from students where name like "H%";
+
+->select * from students where name like "%a%";
+
+->select * from students order by name;
+
+->select * from students order by name limit 2;
+
+->select * from students order by name limit 2,2;
+
+Marks:
+->select * from marks 
+    where 
+        annual is null;
+
+->select student_id, subject_id, year from marks
+    where
+        annual is null and 
+        year = 2005;
+
+->select student_id, subject_id, year from marks
+    where 
+        annual is null xor half_yearly is null xor quarterly is null;
+
+->select student_id, subject_id, year, quarterly, half_yearly, annual from marks
+    where
+        quarterly > 90 and annual > 90 and half_yearly > 90;
+
+->select student_id, subject_id, 
+  (
+    ( sum(quarterly) +sum(half_yearly) + sum(annual) ) / 
+    (count(quarterly) + count(half_yearly) + count(annual))
+  ) as average , year
+    from marks
+    group by 
+      year,subject_id;
+
+->select student_id, subject_id, 
+  (
+    ( sum(quarterly) +sum(half_yearly) + sum(annual) ) / 
+    (count(quarterly) + count(half_yearly) + count(annual))
+  ) as average , year
+    from marks join students
+    group by 
+      year,subject_id
+    having
+      year between 2003 and 2004;

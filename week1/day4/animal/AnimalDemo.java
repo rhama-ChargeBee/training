@@ -2,12 +2,11 @@
 package animal;
 
 import java.util.*;
-import java.io.*;
 
 public class AnimalDemo{
 	public static void main(String[] args) throws Exception{
-		ArrayList <Animal> animals= new ArrayList <Animal> ();
-		Console cons=System.console();
+		ArrayList <Animal> animals= new ArrayList <> ();
+		Scanner scan = new Scanner(System.in);
 		int n;
 		char ch;
 		//Bat obj=new Bat();
@@ -31,9 +30,14 @@ public class AnimalDemo{
 					animals.add(new Parrot());
 					break;
 			}
-			
-			ch=cons.readLine("Do u want to continue??? (y/n)").charAt(0);
-
+                        System.out.println("Do u want to continue??? Hghjghjjhello world hjghjghjghjghjh (y/n)");
+			try{
+                            ch=scan.next().charAt(0);
+                        }catch(Exception e){
+                            ch='n';
+                            System.err.println("Exception in ch: "+e);
+                            e.printStackTrace();
+                        }
 		}while(ch=='y');
 
 		//System.out.println(obj.getName()+"\n"+obj.getHerb()+"\n"+obj.getWalk());
@@ -74,10 +78,18 @@ public class AnimalDemo{
 	
 
 	private static int findAnimal(){
-		System.out.println("1.Bat\n2.Dog\n3.Cow\n4.Ostrich\n5.Parrot");
-		Console cons=System.console();
-		int n=Integer.parseInt(cons.readLine());
+            int n;
+            System.out.println("1.Bat\n2.Dog\n3.Cow\n4.Ostrich\n5.Parrot");
+            try{
+		Scanner scan = new Scanner(System.in);
+		n= scan.nextInt();
 		return n;
+            }catch(Exception e){
+                n=1;
+                System.err.println("Exception in findAnimal(): "+e);
+                e.printStackTrace();
+            }
+            return n;
 	}
 	
 }
