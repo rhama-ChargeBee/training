@@ -5,7 +5,7 @@ Students:
 
 ->select * from students where name like "%a%";
 
-->select * from students order by name;
+->select * from students order by name desc;
 
 ->select * from students order by name limit 2;
 
@@ -23,7 +23,7 @@ Marks:
 
 ->select student_id, subject_id, year from marks
     where 
-        annual is null xor half_yearly is null xor quarterly is null;
+        annual is not null xor half_yearly is not null xor quarterly is not null;
 
 ->select student_id, subject_id, year, quarterly, half_yearly, annual from marks
     where
@@ -31,8 +31,7 @@ Marks:
 
 ->select student_id, subject_id, 
   (
-    ( sum(quarterly) +sum(half_yearly) + sum(annual) ) / 
-    (count(quarterly) + count(half_yearly) + count(annual))
+    (ifnull(quarterly,0) + ifnull(half_yearly,0)+ ifnull(annual,0) )/ 3
   ) as average , year
     from marks
     group by 
@@ -40,8 +39,7 @@ Marks:
 
 ->select student_id, subject_id, 
   (
-    ( sum(quarterly) +sum(half_yearly) + sum(annual) ) / 
-    (count(quarterly) + count(half_yearly) + count(annual))
+    (ifnull(quarterly,0) + ifnull(half_yearly,0)+ ifnull(annual,0) )/ 3
   ) as average , year
     from marks join students
     group by 

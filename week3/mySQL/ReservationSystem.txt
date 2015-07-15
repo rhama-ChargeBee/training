@@ -46,7 +46,7 @@ create table TrainCoaches (
 		);
 
 create table Bookings ( 
-		BookingRefNo int unsigned not null, 
+		BookingRefNo int unsigned not null auto_increment, 
 		RouteId int unsigned,  
 		TrainNo int unsigned,  
 		CoachCode int unsigned, 
@@ -55,7 +55,7 @@ create table Bookings (
 		NoOfTickets int unsigned, 
 		primary key (BookingRefNo), 
 		foreign key (RouteId) references TrainRouteMaps (RouteId), 
-		foreign key (TrainNo) references TrainRouteMaps (RouteId), 
+		foreign key (TrainNo) references TrainRouteMaps (TrainNo), 
 		foreign key (CoachCode) references Coaches (CoachCode) 
 		);
 
@@ -65,3 +65,109 @@ create table Users (
 		LPassword varchar(20) not null,
 		primary key (UserId)
 		);
+
+***************************************************************************************************************************
+QUERIES
+
+1->	select TrainName from Trains;
+
+All Routes
+2->	select RouteId, st1.StationCode as OriginStation, st2.StationCode as DestinationStation from
+	( Routes join stations as st1 on originStationId = StationId)
+	join 
+	stations as st2 on DestinationStationID= st2.StationID;
+
+All train Routes
+2->	select t1.RouteId, st1.StationCode as OriginStation, st2. StationCode as DestinationStation from
+	( (TrainRouteMaps as t1 join routes as t2 on t1.RouteId = t2.RouteId )
+		join 
+		stations as st1 on originStationId = StationId)
+	join 
+	stations as st2 on DestinationStationID= st2.StationID;
+
+3->	select TrainNo, sum(NoOfSeats) as TotalNoOfSeats from TrainCoaches group by TrainNo;
+
+4->	select RouteId, st1.StationCode as OriginStation, st2.StationCode as DestinationStation from
+	( Routes join stations as st1 on originStationId = StationId)
+	join 
+	stations as st2 on DestinationStationID= st2.StationID
+	where
+		st1.StationCode like "mas";
+
+5-> select RouteId, st1.StationCode as OriginStation, st2.StationCode as DestinationStation from
+	( Routes join stations as st1 on originStationId = StationId)
+	join 
+	stations as st2 on DestinationStationID= st2.StationID
+	where
+		st2.StationCode like "mas" or
+		st2.StationCode like "cbe" or
+		st2.StationCode like "alp";
+
+6->	select * from bookings where DateOfBooking between 20141201 and 20150428;
+
+7->	select TrainName from Trains where TrainName like "A%";
+
+8-> select * from bookings where DateOfBooking is not null;
+
+9->	select * from bookings 
+	where 
+		DateOfBooking between 20140101 and 20141231 and 
+		DateOfJourney between 20150101 and 20151231;
+
+10->select TrainNo, count(NoOfSeats) as TotalNoOfCoaches from TrainCoaches group by TrainNo;
+	select count(NoOfSeats) as TotalNoOfCoaches from TrainCoaches;
+
+11->select TrainNo, count(BookingRefNo) as TotalNoOfBookings from bookings where TrainNo= 10001;
+
+12->select sum(NoOfTickets) as Total from bookings group by TrainNo having TrainNo=10002;
+
+13->select RouteId, st1.StationCode as OriginStation, st2.StationCode, min(DistanceInKms) as DestinationStation from
+	( Routes join stations as st1 on originStationId = StationId)
+	join 
+	stations as st2 on DestinationStationID= st2.StationID;
+
+14->select TrainName, sum(NoOfTickets) as Total from  bookings left outer join trains
+	On
+		bookings.TrainNo= trains.TrainNo
+	group by bookings.TrainNo;
+
+15->select CoachCode, CostPerKm*50 from coaches;
+
+16->select TrainName, DepartureTime from 
+	(((TrainRouteMaps join Trains on TrainRouteMaps.TrainNo =Trains.TrainNo) join
+		Routes on TrainRouteMaps.RouteId = Routes.RouteId) join
+			Stations on Routes.DestinationStationId= Stations.StationId)
+	where
+		StationCode like "mas";
+
+17->select TrainName, sum(NoOfTickets) as Total from  bookings left outer join trains
+	On
+		bookings.TrainNo= trains.TrainNo
+	group by bookings.TrainNo
+	having Total > 10;
+
+18->select TrainName, sum(NoOfTickets) as Total from  bookings left outer join trains
+	On
+		bookings.TrainNo= trains.TrainNo
+	group by bookings.TrainNo
+	having Total < 10;
+
+19->select TrainName, st1.StationCode as OriginStation, st2.StationCode as DestStation, b1.CoachCode from
+	(bookings as b1 join trains as t1 on b1.TrainNo=t1.TrainNo) join
+		((routes as r1 join stations as st1 on r1.OriginStationId = st1.StationId) join
+			stations as st2 on r1.DestinationStationId= st2. StationId)
+	on 
+		b1.RouteId =  r1.RouteId
+	where
+		b1.DateOfJourney > 20150901;
+
+20->select T1.TrainNo, TrainName, st1.StationCode as Source, st2.StationCode as Destination from 
+	(TrainRouteMaps as tr1 join Trains as t1 on tr1.TrainNo =t1.TrainNo) join
+		((routes as r1 join stations as st1 on r1.OriginStationId = st1.StationId) join
+			stations as st2 on r1.DestinationStationId= st2. StationId)
+	on tr1.RouteId=r1.RouteId
+	where 
+		(st1.StationCode like "mas" or st1.StationCode like "cbe") and
+		(st2.StationCode like "mas" or st2.StationCode like "cbe");
+
+21->select * from trains where TrainNo in (select distinct TrainNo from bookings);

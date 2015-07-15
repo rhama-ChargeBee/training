@@ -27,25 +27,23 @@ Marks join students:
 
 5->select students.name, marks.subject_id, 
   (
-    ( sum(quarterly) +sum(half_yearly) + sum(annual) ) / 
-    (count(quarterly) + count(half_yearly) + count(annual))
+    (ifnull(quarterly,0) + ifnull(half_yearly,0)+ ifnull(annual,0) )/ 3
   ) as average , year
     from marks join students 
-    where 
+    on 
       marks.student_id = students.id
     group by 
-      year,subject_id;
+      student_id, year,subject_id;
 
 6->select students.name, marks.subject_id, 
   (
-    ( sum(quarterly) +sum(half_yearly) + sum(annual) ) / 
-    (count(quarterly) + count(half_yearly) + count(annual))
+    (ifnull(quarterly,0) + ifnull(half_yearly,0)+ ifnull(annual,0) )/ 3
   ) as average , year
     from marks join students 
-    where 
+    on 
       marks.student_id = students.id
     group by 
-      year,subject_id
+      student_id, year,subject_id
     having
       year between 2003 and 2004;
 
@@ -70,11 +68,11 @@ Advanced:
       student_id, year;
       
 4->select name, grade, count(medal_won) as no_of_medals from students join medals
-    where
+    On
       students.id = medals.student_id
     group by 
-      medals.student_id
-    having no_of_medals > 3;
+      medals.student_id, grade
+    having no_of_medals > 3 and grade between 9 and 10;
 
 5->select name, marks.grade, count(medal_won) as no_of_medals from 
   (
@@ -159,7 +157,7 @@ Advanced:
       t1.student_id= t2.student_id
     order by year;
 
-*********************************************************************************************************************************
+*****************************************************************************************************************************
 
 create procedure getRating (mark int)
 returns char(1)
@@ -182,4 +180,6 @@ begin
   end if;
   return markRate;
 end;
- 
+
+
+select students.name, marks.subject_id, ( (ifnull(quarterly,0) + ifnull(half_yearly,0)+ ifnull(annual,0) )/ 3 ) as average , year from marks join students on marks.student_id = students.id group by student_id, year,subject_id;
