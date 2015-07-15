@@ -77,14 +77,6 @@ All Routes
 	join 
 	stations as st2 on DestinationStationID= st2.StationID;
 
-All train Routes
-2->	select t1.RouteId, st1.StationCode as OriginStation, st2. StationCode as DestinationStation from
-	( (TrainRouteMaps as t1 join routes as t2 on t1.RouteId = t2.RouteId )
-		join 
-		stations as st1 on originStationId = StationId)
-	join 
-	stations as st2 on DestinationStationID= st2.StationID;
-
 3->	select TrainNo, sum(NoOfSeats) as TotalNoOfSeats from TrainCoaches group by TrainNo;
 
 4->	select RouteId, st1.StationCode as OriginStation, st2.StationCode as DestinationStation from
@@ -92,16 +84,16 @@ All train Routes
 	join 
 	stations as st2 on DestinationStationID= st2.StationID
 	where
-		st1.StationCode like "mas";
+		st2.StationCode like "mas";
 
 5-> select RouteId, st1.StationCode as OriginStation, st2.StationCode as DestinationStation from
 	( Routes join stations as st1 on originStationId = StationId)
 	join 
 	stations as st2 on DestinationStationID= st2.StationID
 	where
-		st2.StationCode like "mas" or
-		st2.StationCode like "cbe" or
-		st2.StationCode like "alp";
+		st1.StationCode like "mas" or
+		st1.StationCode like "cbe" or
+		st1.StationCode like "alp";
 
 6->	select * from bookings where DateOfBooking between 20141201 and 20150428;
 
@@ -111,17 +103,20 @@ All train Routes
 
 9->	select * from bookings 
 	where 
-		DateOfBooking between 20140101 and 20141231 and 
-		DateOfJourney between 20150101 and 20151231;
+		year(DateOfBooking)= 2014 and 
+		year(DateOfJourney)=2015;
 
-10->select TrainNo, count(NoOfSeats) as TotalNoOfCoaches from TrainCoaches group by TrainNo;
-	select count(NoOfSeats) as TotalNoOfCoaches from TrainCoaches;
+10->select TrainCoaches.TrainNo, TrainName, count(CoachCode) as TotalNoOfCoaches from 
+	TrainCoaches join Trains on TrainCoaches.TrainNo =  Trains.TrainNo
+	group by TrainCoaches.TrainNo;
+	
+10->select count(NoOfSeats) as TotalNoOfCoaches from TrainCoaches;
 
-11->select TrainNo, count(BookingRefNo) as TotalNoOfBookings from bookings where TrainNo= 10001;
+11->select TrainNo, count(BookingRefNo) as TotalNoOfBookings from bookings group by TrainNo having TrainNo= 10001;
 
 12->select sum(NoOfTickets) as Total from bookings group by TrainNo having TrainNo=10002;
 
-13->select RouteId, st1.StationCode as OriginStation, st2.StationCode, min(DistanceInKms) as DestinationStation from
+13->select RouteId, st1.StationCode as OriginStation, st2.StationCode as DestinationStation, min(DistanceInKms) from
 	( Routes join stations as st1 on originStationId = StationId)
 	join 
 	stations as st2 on DestinationStationID= st2.StationID;
@@ -136,7 +131,7 @@ All train Routes
 16->select TrainName, DepartureTime from 
 	(((TrainRouteMaps join Trains on TrainRouteMaps.TrainNo =Trains.TrainNo) join
 		Routes on TrainRouteMaps.RouteId = Routes.RouteId) join
-			Stations on Routes.DestinationStationId= Stations.StationId)
+			Stations on Routes.OriginStationId= Stations.StationId)
 	where
 		StationCode like "mas";
 

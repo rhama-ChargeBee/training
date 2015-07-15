@@ -1,17 +1,17 @@
 Marks join students:
 1->select marks.*, students.name from marks join students 
-    where 
+    on 
         marks.annual is null and 
         marks.student_id = students.id ;
 
 2->select students.name, marks.subject_id, marks.year from marks join students 
-    where 
+    on 
         marks.student_id = students.id and 
         marks.annual is null and 
         marks.year = 2005;
 
 3->select students.name, marks.subject_id, marks.year from marks join students 
-    where 
+    on 
       marks.student_id = students.id and 
       (
         annual is null xor half_yearly is null xor quarterly is null
@@ -19,7 +19,7 @@ Marks join students:
 
 4->select students.name, marks.subject_id, year, quarterly, half_yearly, annual
    from marks join students 
-    where 
+    on 
       marks.student_id = students.id and 
       (
         quarterly > 90 and annual > 90 and half_yearly > 90
@@ -49,15 +49,12 @@ Marks join students:
 
 Advanced:
 1->select students.name from students join marks
-    where
+    on
       marks.student_id = students.id and
       (annual is null and quarterly is null and half_yearly is null );
 
-2->select students.name, if
-  ( 
-    (half_yearly+quarterly+annual) is null, 0, half_yearly+quarterly+annual
-  ) as marks, year from students join marks
-    where
+2->select students.name, ifnull((half_yearly+quarterly+annual),0) as marks, year from students join marks
+    on
       marks.student_id=students.id;
 
 3->select name, sum(quarterly) as total, grade from students join marks

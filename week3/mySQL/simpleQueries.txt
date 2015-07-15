@@ -21,9 +21,9 @@ Marks:
         annual is null and 
         year = 2005;
 
-->select student_id, subject_id, year from marks
+->select student_id, subject_id, year, annual, half_yearly, quarterly from marks
     where 
-        annual is not null xor half_yearly is not null xor quarterly is not null;
+      not(annual is null and half_yearly is null and quarterly is null);
 
 ->select student_id, subject_id, year, quarterly, half_yearly, annual from marks
     where
