@@ -5,14 +5,14 @@ Students:
 
 ->select * from students where name like "%a%";
 
-->select * from students order by name desc;
+->select * from students order by name;
 
 ->select * from students order by name limit 2;
 
 ->select * from students order by name limit 2,2;
 
 Marks:
-->select * from marks 
+->select distinct student_id from marks 
     where 
         annual is null;
 
@@ -34,15 +34,11 @@ Marks:
     (ifnull(quarterly,0) + ifnull(half_yearly,0)+ ifnull(annual,0) )/ 3
   ) as average , year
     from marks
-    group by 
-      year,subject_id;
 
 ->select student_id, subject_id, 
   (
     (ifnull(quarterly,0) + ifnull(half_yearly,0)+ ifnull(annual,0) )/ 3
   ) as average , year
     from marks join students
-    group by 
-      year,subject_id
-    having
+    where
       year between 2003 and 2004;

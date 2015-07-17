@@ -1,29 +1,30 @@
 Marks join students:
-1->select marks.*, students.name from marks join students 
-    on 
-        marks.annual is null and 
-        marks.student_id = students.id ;
+1->select distinct name from marks join students
+  on
+    marks.student_id = students.id
+  where 
+        annual is null;
 
-2->select students.name, marks.subject_id, marks.year from marks join students 
-    on 
-        marks.student_id = students.id and 
-        marks.annual is null and 
-        marks.year = 2005;
+2->select student_id, subject_id, year from marks join students
+  on
+    marks.student_id = students.id
+  where
+      annual is null and 
+      year = 2005;
 
 3->select students.name, marks.subject_id, marks.year from marks join students 
     on 
-      marks.student_id = students.id and 
-      (
-        annual is null xor half_yearly is null xor quarterly is null
-      );
+      marks.student_id = students.id
+    where
+      not(annual is null and half_yearly is null and quarterly is null);
 
 4->select students.name, marks.subject_id, year, quarterly, half_yearly, annual
    from marks join students 
     on 
       marks.student_id = students.id and 
-      (
-        quarterly > 90 and annual > 90 and half_yearly > 90
-      );
+    where
+      quarterly > 90 and annual > 90 and half_yearly > 90
+      
 
 5->select students.name, marks.subject_id, 
   (
@@ -32,8 +33,7 @@ Marks join students:
     from marks join students 
     on 
       marks.student_id = students.id
-    group by 
-      student_id, year,subject_id;
+    
 
 6->select students.name, marks.subject_id, 
   (
@@ -42,121 +42,104 @@ Marks join students:
     from marks join students 
     on 
       marks.student_id = students.id
-    group by 
-      student_id, year,subject_id
-    having
-      year between 2003 and 2004;
+    where
+      year in (2003,2004);
 
 Advanced:
-1->select students.name from students join marks
+1->select students.name, year from marks right outer join students 
     on
-      marks.student_id = students.id and
-      (annual is null and quarterly is null and half_yearly is null );
+      marks.student_id = students.id
+    group by
+      students.id, year
+    having
+      count(marks.annual)=0 and count(marks.quarterly)=0 and count(marks.half_yearly)=0;
 
-2->select students.name, ifnull((half_yearly+quarterly+annual),0) as marks, year from students join marks
+2->select students.name, ifnull(sum(annual),0), marks.year from marks right outer join students 
+    on 
+        marks.student_id = students.id
+    group by
+      students.id, year;
+
+3->select name, sum(quarterly) as total, grade from students left outer join marks
     on
-      marks.student_id=students.id;
-
-3->select name, sum(quarterly) as total, grade from students join marks
+      marks.student_id = students.id 
     where
-      marks.student_id = students.id and
       year = 2003
     group by
-      student_id, year;
+      students.id, year;
       
 4->select name, grade, count(medal_won) as no_of_medals from students join medals
     On
       students.id = medals.student_id
+    where
+      grade in (9,10)
     group by 
       medals.student_id, grade
-    having no_of_medals > 3 and grade between 9 and 10;
+    having no_of_medals > 3;
 
-5->select name, marks.grade, count(medal_won) as no_of_medals from 
-  (
-    students left outer join medals on
-    students.id = medals.student_id
-  ) left outer join marks
+5->select name, marks.grade, count(medal_won) as no_of_medals from (students left outer join medals 
+    on 
+      students.id = medals.student_id)
+    join marks
     on
-      marks.student_id = students.id
+      students.id = marks.student_id
     group by 
       students.id
     having no_of_medals < 2;
 
-6->select distinct name, year from students as stu1 join marks as mar1
-    where
-      mar1.student_id = stu1.id and
-      (select max(subject_id) from marks) =  (select count(id) from marks as mar2 where stu1.id = mar2.student_id and mar2.annual >90) and
-      stu1.id in ( select distinct students.id from students left outer join medals on 
-        students.id = medals.student_id 
-        where 
-          medal_won is null );
-
-7->select distinct name, game_id, count(medal_won) as no_of_medals , grade, year from 
-    medals left outer join students on medals.student_id = students.id
-    group by 
-      students.id
-    having count(medal_won) > 3;
-
-8->select t1.year, name, quarterly_per, half_yearly_per, annual_per, medal_count from
-  (
-    (select year, student_id, avg(quarterly)*100 as quarterly_per, avg(half_yearly)* 100 as half_yearly_per, avg(annual)*100 as annual_per from marks group by year, student_id) as t1 
-  left outer join
-    (select year, student_id, count(medal_won) as medal_count from medals group by year,student_id) as t2
+6->select distinct name, marks.year from students left join medals
   on
-    t1.student_id = t2.student_id and 
-    t1.year = t2.year
-  )
-  join
-    (select id as student_id, name from students) as t3
-    where
-      t1.student_id= t3.student_id
-    order by year;
+    students.id= medals.student_id
+  join marks
+  on
+    students.id = marks.student_id
+  where
+    medals.id is null and
+    marks.annual >90
+  group by
+    marks.year, marks.student_id
+  having
+    count(subject_id) = 5;
 
-9->select t1.year, name, quarterly_rating, half_yearly_rating, annual_rating, grade from
-    (select year, student_id, grade, 
-    if(sum(quarterly) between 450 and 500,'S',
-        if(sum(quarterly) between 400 and 449, 'A',
-          if(sum(quarterly) between 350 and 400, 'B',
-            if(sum(quarterly) between 300 and 349, 'C',
-              if(sum(quarterly) between 250 and 300, 'D',
-                if(sum(quarterly) between 200 and 249, 'E', 'F')
-              )
-            )
-          )
-        )
-      ) as quarterly_rating, 
-    if(sum(half_yearly) between 450 and 500,'S',
-        if(sum(half_yearly) between 400 and 449, 'A',
-          if(sum(half_yearly) between 350 and 400, 'B',
-            if(sum(half_yearly) between 300 and 349, 'C',
-              if(sum(half_yearly) between 250 and 300, 'D',
-                if(sum(half_yearly) between 200 and 249, 'E', 'F')
-              )
-            )
-          )
-        )
-      ) as half_yearly_rating, 
-    if(sum(annual) between 450 and 500,'S',
-        if(sum(annual) between 400 and 449, 'A',
-          if(sum(annual) between 350 and 400, 'B',
-            if(sum(annual) between 300 and 349, 'C',
-              if(sum(annual) between 250 and 300, 'D',
-                if(sum(annual) between 200 and 249, 'E', 'F')
-              )
-            )
-          )
-        )
-      ) as annual_rating 
-  from marks group by year, student_id) as t1 
-  join
-    (select id as student_id, name from students) as t2
-    where
-      t1.student_id= t2.student_id
-    order by year;
+7->select distinct name, game_id, grade, year from medals left outer join students 
+    on 
+      medals.student_id = students.id
+    where 
+      medals.student_id in 
+            (select student_id from medals 
+            group by 
+              student_id
+            having 
+              count(medal_won) > 3);
+
+8->select students.id, name, avg(annual), count(medal_won), marks.year  from (students left outer join marks 
+    on
+      students.id= marks.student_id)
+    left outer join medals
+      on
+        students.id= medals.student_id and
+        marks.year= medals.year
+    where 
+      subject_id=1
+    group by
+      students.id, marks.year;
+
+ 9->select name, year, grade, 
+      getRating(sum(quarterly)) as quarterly_rating, 
+      getRating(sum(half_yearly)) as half_yearly_rating,
+      getRating(sum(annual)) as annual_rating 
+  from marks join students 
+  on
+    marks.student_id=students.id
+  group by 
+    year, student_id
+  order by
+    year, name;
 
 *****************************************************************************************************************************
 
-create procedure getRating (mark int)
+delimiter $$
+create function getRating (mark int)
 returns char(1)
 begin
   declare markRate char(1);
@@ -176,7 +159,6 @@ begin
     set markRate= 'F';
   end if;
   return markRate;
-end;
+end $$
 
-
-select students.name, marks.subject_id, ( (ifnull(quarterly,0) + ifnull(half_yearly,0)+ ifnull(annual,0) )/ 3 ) as average , year from marks join students on marks.student_id = students.id group by student_id, year,subject_id;
+delimiter ;

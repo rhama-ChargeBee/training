@@ -1,0 +1,84 @@
+alter table marks 
+	add created_at TIMESTAMP not null Default CURRENT_TIMESTAMP, 
+	add TIMESTAMP not null default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+alter table medals 
+	add created_at TIMESTAMP not null Default CURRENT_TIMESTAMP, 
+	add updated_at TIMESTAMP not null default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+alter table students 
+	add created_at TIMESTAMP not null Default CURRENT_TIMESTAMP, 
+	add updated_at TIMESTAMP not null default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+update marks set quarterly =0 where quarterly is null;
+update marks set half_yearly =0 where half_yearly is null;
+update marks set annual =0 where annual is null;
+
+alter table marks modify annual int(11) not null default 0, modify half_yearly int(11) not null default 0, modify quarterly int(11) not null default 0;
+
+create table students_summary (
+	student_id bigint(19) NOT NULL, 
+	student_name varchar(100) DEFAULT NULL, 
+	year int(11) DEFAULT NULL,
+	percentage int(11) NOT NULL DEFAULT '0',
+	no_of_medals_received int(3) NOT NULL DEFAULT 0
+	);
+
+insert into students_summary
+select students.id, name, marks.year, avg(annual), count(medal_won)  from (students left outer join marks 
+on
+	students.id= marks.student_id)
+	left outer join medals
+	on
+		students.id= medals.student_id and
+		marks.year= medals.year
+where 
+	subject_id=1
+group by
+	students.id, marks.year;
+
+DELIMITER $$
+
+CREATE TRIGGER avg_trigger_insert before INSERT ON marks 
+FOR EACH ROW
+BEGIN
+	SET new.average=(new.annual+new.half_yearly+new.quarterly)/3;
+END $$
+
+CREATE TRIGGER avg_trigger_update before UPDATE ON marks 
+FOR EACH ROW
+BEGIN
+	SET new.average=(new.annual+new.half_yearly+new.quarterly)/3;
+END $$
+
+DELIMITER ;
+
+ALTER TABLE medals change medal_won medal_recieved VARCHAR(10) DEFAULT NULL;
+
+ALTER TABLE medals add medal_won VARCHAR(10) DEFAULT NULL;
+
+DELIMITER $$
+
+CREATE TRIGGER medal_trigger_insert before INSERT ON medals 
+FOR EACH ROW
+BEGIN
+	IF new.medal_won is null THEN
+		SET new.medal_won=new.medal_recieved;
+	ELSE
+		SET new.medal_recieved=new.medal_won;
+	END IF;
+END $$
+
+CREATE TRIGGER medal_trigger_update before UPDATE ON medals 
+FOR EACH ROW
+BEGIN
+	IF new.medal_won is null THEN
+		SET new.medal_won=new.medal_recieved;
+	ELSE
+		SET new.medal_recieved=new.medal_won;
+	END IF;
+END $$
+
+DELIMITER ;
+
+ALTER TABLE DROP medal_won;
