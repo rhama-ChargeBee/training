@@ -21,14 +21,15 @@ public class InsertData{
     }
 
 
-    private void retrieveRecords(Connection con, String name) throws SQLException{
+    private ResultSet retrieveRecords(Connection con, String name) throws SQLException{
             try (Statement st = con.createStatement()) {
                 ResultSet rs= st.executeQuery("select * from phone_directory where name like \"%" + name + "%\";");
                 printRecords(rs);
+                return rs;
             }
     }
 
-    private void retrieveRecords(Connection con, long phoneNumber) throws SQLException{
+    private ResultSet retrieveRecords(Connection con, long phoneNumber) throws SQLException{
         ResultSet rs = null;
         try{
             Statement st= con.createStatement();
@@ -37,9 +38,8 @@ public class InsertData{
         }catch(Exception e){
             System.err.println(e);
             e.printStackTrace();
-        }finally{
-        	rs.close();
         }
+        return rs;
     }
 
     private void printRecords(ResultSet rs){
@@ -60,6 +60,127 @@ public class InsertData{
         System.out.println();
         System.out.println();
     }
+
+    private void updateRecords(Connection con, String name)throws Exception{
+        PreparedStatement ps= null;
+        Scanner scan=new Scanner(System.in);
+        System.out.println("What do u want to update?");
+        System.out.println("1.Name\n2.Mobile\n3.Home\n4.Work");
+        int n= scan.nextInt();
+        System.out.println("Enter new value:");
+        switch(n){
+            case 1:
+                String val= scan.next();
+                ps=con.prepareStatement("update phone_directory set name=? where name like ?;");
+                ps.setString(1,val);
+                break;
+            case 2:
+                long val1=scan.nextLong();
+                ps=con.prepareStatement("update phone_directory set mobile=? where name like ?;");
+                ps.setLong(1,val1);
+                break;
+            case 3:
+                val1=scan.nextLong();
+                ps=con.prepareStatement("update phone_directory set home=? where name like ?;");
+                ps.setLong(1,val1);
+                break;
+            case 4:
+                val1=scan.nextLong();
+                ps=con.prepareStatement("update phone_directory set work=? where name like?;");
+                ps.setLong(1,val1);
+                break;
+            default:
+                System.err.println("ERROR");
+                break;
+        }
+        ps.setString(2,name);
+        ps.executeUpdate();
+        ps.close();
+    }
+
+    private void updateRecords(Connection con, long number)throws Exception{
+        PreparedStatement ps= null;
+        Scanner scan=new Scanner(System.in);
+        System.out.println("What do u want to update?");
+        System.out.println("1.Name\n2.Mobile\n3.Home\n4.Work");
+        int n= scan.nextInt();
+        System.out.println("Enter new value:");
+        switch(n){
+            case 1:
+                String val= scan.next();
+                ps=con.prepareStatement("update phone_directory set name=? where mobile=? or home= ? or work= ?;");
+                ps.setString(1,val);
+                break;
+            case 2:
+                long val1=scan.nextLong();
+                ps=con.prepareStatement("update phone_directory set mobile=? where mobile=? or home= ? or work= ?;");
+                ps.setLong(1,val1);
+                break;
+            case 3:
+                val1=scan.nextLong();
+                ps=con.prepareStatement("update phone_directory set home=? where mobile=? or home= ? or work= ?");
+                ps.setLong(1,val1);
+                break;
+            case 4:
+                val1=scan.nextLong();
+                ps=con.prepareStatement("update phone_directory set work=? where mobile=? or home= ? or work= ?");
+                ps.setLong(1,val1);
+                break;
+            default:
+                System.err.println("ERROR");
+                break;
+        }
+        ps.setLong(2,number);
+        ps.setLong(3,number);
+        ps.setLong(4,number);
+        ps.executeUpdate();
+        ps.close();
+    }
+
+    private void putData(Connection con)throws Exception{
+    	String sqlInsert= "insert into phone_directory values(? ,? ,? ,? ,? );";
+    	PreparedStatement ps= con.prepareStatement(sqlInsert);
+    	Scanner scan= new Scanner(System.in);
+    	System.out.println("Name");
+    	ps.setString(1, scan.next());
+    	System.out.println("Address");
+    	ps.setString(2, scan.next());
+    	System.out.println("Mobile");
+    	ps.setLong( 3, scan.nextLong() );
+    	System.out.println("Home");
+    	ps.setLong(4, scan.nextLong() );
+    	System.out.println("Work");
+    	ps.setLong(5, scan.nextLong());
+    	ps.executeUpdate();
+		ps.close();
+    }
+
+    private void editData(Connection con) throws Exception{
+		Scanner scan= new Scanner(System.in);
+        System.out.println("Search by...\n1.Name\n2.Phone Number");
+		int n=scan.nextInt();
+		ResultSet rs = null;
+		switch(n){
+			case 1:
+                System.out.print("Enter the String: ");
+                String name= scan.next();
+				rs= retrieveRecords(con, name);
+                updateRecords(con, name);
+				break;
+			case 2:
+                System.out.print("Enter the Phone Number: ");
+                long number= scan.nextLong();
+				rs= retrieveRecords(con, number);
+                updateRecords(con, number);
+				break;
+			default:
+				System.out.println("Wrong option... Taking default option as \"Name\"");
+				rs= retrieveRecords(con, scan.next());
+				break;
+		}
+
+    }
+
     public Connection openDBConnection() throws Exception{
     	Class.forName("com.mysql.jdbc.Driver");
         String connectionUrl = "jdbc:mysql://localhost/mysql?";
@@ -67,7 +188,7 @@ public class InsertData{
         return con;
     }
     
-    public void createTableWithData(Connection con) throws SQLException{
+    public void createTable(Connection con) throws SQLException{
             try (Statement st = con.createStatement()) {
                 st.addBatch("create database if not exists directory;");
                 st.addBatch("use directory;");
@@ -97,15 +218,15 @@ public class InsertData{
 		char c= 'y';
 		Scanner scan= new Scanner(System.in);
 		do{
-                        System.out.println("Search by...\n1.Name\n2.Phone Number");
+            System.out.println("Search by...\n1.Name\n2.Phone Number");
 			int n=scan.nextInt();
 			switch(n){
 				case 1:
-                                        System.out.print("Enter the String: ");
+                    System.out.print("Enter the String: ");
 					retrieveRecords(con, scan.next());
 					break;
 				case 2:
-                                        System.out.print("Enter the Phone Number: ");
+                    System.out.print("Enter the Phone Number: ");
 					retrieveRecords(con, scan.nextLong());
 					break;
 				default:
@@ -117,11 +238,35 @@ public class InsertData{
 			c= scan.next().charAt(0);
 		}while(c=='y');
     }
+
+    public void insertAndUpdate(Connection con) throws Exception{
+    	char c='y';
+    	Scanner scan= new Scanner(System.in);
+
+    	do{
+    		System.out.println("Select an option \n1.InsertData\n2.EditData\n3.Exit\n");
+			int n=scan.nextInt();
+			switch(n){
+				case 1:
+                    putData(con);
+                    break;
+				case 2:
+                    editData(con);
+                    break;
+				default:
+					System.out.println("Exiting...");
+                    c='n';
+					break;
+    	}
+    }while(c=='y');
+    }
+
     public static void main(String[] args) throws Exception{
     	InsertData obj=new InsertData("/Users/cb-rhama/chargebee/training/week2/day1_2/phoneDirectory/sample.csv");
     	Connection con= obj.openDBConnection();
-    	obj.createTableWithData(con);
+    	obj.createTable(con);
         //obj.batchInsertionOfData(con).executeBatch();
     	obj.getQuery(con);
+        obj.insertAndUpdate(con);
     }
 }
