@@ -20,7 +20,8 @@ public class InsertData{
 		}
     }
 
-
+    //Function overloading
+    //If the second arguement is a string, the retrieval of records by name takes place.
     private ResultSet retrieveRecords(Connection con, String name) throws SQLException{
             try (Statement st = con.createStatement()) {
                 ResultSet rs= st.executeQuery("select * from phone_directory where name like \"%" + name + "%\";");
@@ -29,6 +30,7 @@ public class InsertData{
             }
     }
 
+    //If the second arguement is a long, the retrieval of records by the phone numbers(mobile, work or home) takes place.
     private ResultSet retrieveRecords(Connection con, long phoneNumber) throws SQLException{
         ResultSet rs = null;
         try{
@@ -42,6 +44,7 @@ public class InsertData{
         return rs;
     }
 
+    //prints the given ResultSet
     private void printRecords(ResultSet rs){
             try {
                 while(rs.next()){
@@ -61,6 +64,8 @@ public class InsertData{
         System.out.println();
     }
 
+    //function overloading
+    //updates the name, mobile, home and work fields of the records that match(partialy or completely) the given string, name;
     private void updateRecords(Connection con, String name)throws Exception{
         PreparedStatement ps= null;
         Scanner scan=new Scanner(System.in);
@@ -98,6 +103,7 @@ public class InsertData{
         ps.close();
     }
 
+    //updates the name, mobile, home and work fields of the records that match(completely) the given long, number;
     private void updateRecords(Connection con, long number)throws Exception{
         PreparedStatement ps= null;
         Scanner scan=new Scanner(System.in);
@@ -137,6 +143,7 @@ public class InsertData{
         ps.close();
     }
 
+    //Gets all the field required for a record and enters it into the database.
     private void putData(Connection con)throws Exception{
     	String sqlInsert= "insert into phone_directory values(? ,? ,? ,? ,? );";
     	PreparedStatement ps= con.prepareStatement(sqlInsert);
@@ -155,6 +162,7 @@ public class InsertData{
 		ps.close();
     }
 
+    //Searches the records 1st and edits the retrieved records. updateRecords(Connection, String): void and updateRecords(Connection, long): void are used for searching by name and phone number(mobile, home and work) respectively.
     private void editData(Connection con) throws Exception{
 		Scanner scan= new Scanner(System.in);
         System.out.println("Search by...\n1.Name\n2.Phone Number");
@@ -181,6 +189,7 @@ public class InsertData{
 
     }
 
+    //returns Connection for the opened db
     public Connection openDBConnection() throws Exception{
     	Class.forName("com.mysql.jdbc.Driver");
         String connectionUrl = "jdbc:mysql://localhost/mysql?";
@@ -188,6 +197,7 @@ public class InsertData{
         return con;
     }
     
+    //Creates a new table if the table does not already exists.
     public void createTable(Connection con) throws SQLException{
             try (Statement st = con.createStatement()) {
                 st.addBatch("create database if not exists directory;");
@@ -197,6 +207,7 @@ public class InsertData{
             }
     } 
 
+    //Inserts data into the table from the .csv file of the phone directory. the path of this csv file is given in the constructor
     public PreparedStatement batchInsertionOfData(Connection con) throws SQLException{
     	String sqlInsert= "insert into phone_directory values(? ,? ,? ,? ,? );";
     	PreparedStatement ps= con.prepareStatement(sqlInsert);
@@ -214,6 +225,8 @@ public class InsertData{
 		return ps;
     }   
 
+    //This is to get the data from the table. Search by name and search by phone number are the two options provided,
+    // the function retrieveRecords(Connection, String):void and retrieveRecords(Connection, long): void is called respectively.
     public void getQuery(Connection con) throws Exception{
 		char c= 'y';
 		Scanner scan= new Scanner(System.in);
@@ -239,6 +252,7 @@ public class InsertData{
 		}while(c=='y');
     }
 
+    //Inserts data into the database or updates data in the database, according to the user's choice, putData(Connection):void and editData(Connection): void are called respetively.
     public void insertAndUpdate(Connection con) throws Exception{
     	char c='y';
     	Scanner scan= new Scanner(System.in);
