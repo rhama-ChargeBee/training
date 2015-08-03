@@ -1,0 +1,56 @@
+
+<html>
+	<head>
+		<title>SignUp page</title>
+	</head>
+
+	<body bgcolor="CORNSILK">
+		<font color="BLACK" size=3>
+            <br><br><br><br><br><br><br><br>
+			<form method="post" action="signup.jsp">
+            	<center>
+            	<table border="1" width="30%" cellpadding="5">
+            	    <thead>
+                	    <tr>
+                    	    <th colspan="2">SignUp!!!</th>
+                    	</tr>
+                	</thead>
+                	<tbody>
+                	    <tr>
+                	        <td>First Name</td>
+                	        <td><input type="text" name="fname" value="" size=25 placeholder="eg: FirstName" /></td>
+                	    </tr>
+                    	<tr>
+                    	    <td>Last Name</td>
+                    	    <td><input type="text" name="lname" value="" size=25 placeholder="eg: LastName" required/></td>
+                    	</tr>
+                    	<tr>
+                    	    <td>Email</td>
+                    	    <td><input type="text" name="email" value="" size=25 placeholder="eg: username@domain.com" required /></td>
+                    	</tr>
+                    	<tr>
+                    	    <td>Confirm Email</td>
+                    	    <td><input type="text" name="cemail" value="" size=25/ placeholder="eg: UserName" required
+                                /></td>
+                    	</tr>
+                    	<tr>
+                    	    <td>Password</td>
+                    	    <td><input type="password" name="pass" value="" size=25 required pattern="^([a-zA-Z0-9@*#]{8,15})$"/></td>
+                    	</tr>
+                        <tr>
+                            <td>Confirm Password</td>
+                            <td><input type="password" name="cpass" value="" size=25 required pattern="^([a-zA-Z0-9@*#]{8,15})$"/></td>
+                        </tr>
+                    	<tr>
+                    	    <td><input type="submit" value="Submit" /></td>
+                    	    <td><input type="reset" value="Reset" /></td>
+                    	</tr>
+                    	<tr>
+                    	    <td colspan="2">Already registered??? <a href="login.html">Login Here</a></td>
+                    	</tr>
+                	</tbody>
+            	</table>
+            	</center>
+        	</form>
+        </font>
+    </body>
