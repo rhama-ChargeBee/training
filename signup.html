@@ -1,0 +1,48 @@
+
+<html>
+	<head>
+		<title>SignUp page</title>
+        <link rel="stylesheet" type="text/css" href="signup.css">
+	</head>
+
+	<body>
+            <br><br><br><br>
+			<form method="post" action="UserSignup">
+            	<center>
+            	<table id="rcorners2">
+            	    <thead>
+                        <tr>
+                            <th id="reg_to" colspan="2">Register to</th>
+                        </tr>
+
+                        <tr>
+                            <th id="space_portal" colspan="2">Space Portal</th>
+                        </tr>
+
+                	</thead>
+                	<tbody>
+                	    <tr>
+                	        <td><input type="text" name="fname" value="" size=25 placeholder="First Name" /></td>
+                            <td><input type="text" name="lname" value="" size=25 placeholder="Last Name" required/></td>
+                	    </tr>
+                    	<tr>
+                    	    <td><input type="text" id="1" name="email" value="" size=25 placeholder="Email" required /></td>
+                            <td><input type="text" name="cemail" value="" size=25/ placeholder="Confirm Email" required
+                                /></td>
+                    	</tr>
+                    	<tr>
+                    	    <td><input type="password" name="pass" value="" size=25 placeholder="Password" required pattern="^([a-zA-Z0-9@*#]{8,15})$"/></td>
+                            <td><input type="password" name="cpass" value="" size=25 placeholder="ConfirmPassword" required pattern="^([a-zA-Z0-9@*#]{8,15})$"/></td>
+                    	</tr>
+                    	<tr>
+                    	    <td colspan="2" align="center"><input id="reg_button" type="submit" value="Create an Account" /></td>
+                    	</tr>
+                    	<tr>
+                    	    <td id="login_ref" colspan="2" align="center"><a href="login.html">Have an account already?</a></td>
+                    	</tr>
+                	</tbody>
+            	</table>
+            	</center>
+        	</form>
+    </body>
+    </html>

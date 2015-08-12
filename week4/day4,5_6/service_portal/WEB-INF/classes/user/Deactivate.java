@@ -20,9 +20,9 @@ public class Deactivate extends HttpServlet{
 	}
 
 	private void removeFromDb()throws Exception{
-		DbConnection dbCon= new DbConnection();
-		dbCon.deleteUser(getId());
-		dbCon.closeConnection();
+		DbConnection.connect();
+		DbConnection.deleteUser(getId());
+		DbConnection.closeConnection();
 	}
 
 	@Override  

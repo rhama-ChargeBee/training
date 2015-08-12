@@ -9,7 +9,6 @@ import javax.servlet.http.*;
 
 public class UserSignup extends HttpServlet{
     private DetailsBean details=new DetailsBean();
-    private DbConnection dbCon;
     private boolean emailMatchFlag;
     private boolean passMatchFlag;
     private boolean dbFlag= false;
@@ -33,13 +32,13 @@ public class UserSignup extends HttpServlet{
     }
 
     public boolean getSignupConformation()throws Exception{
-        int users= dbCon.userCount(details.getEmail());
+        int users= DbConnection.userCount(details.getEmail());
         boolean flag=false;
         if(users==0 ){
             flag=true;
-            dbCon.insertUser(details);
+            DbConnection.insertUser(details);
         }
-        dbCon.closeConnection();
+        DbConnection.closeConnection();
         return flag;
     }
 
@@ -57,11 +56,11 @@ public class UserSignup extends HttpServlet{
             HttpSession curSession=request.getSession(false);
             if(curSession.getAttribute("user_id")==null){
                 try {
-                    dbCon= new DbConnection();
+                    DbConnection.connect();
                     details.setInBean(request);
                     setFlags();
                     if(dbFlag){
-                        response.sendRedirect("login.html");
+                        response.sendRedirect("login.jsp");
                         return;
                     }else{
                         SignupFlags flags= new SignupFlags(!passMatchFlag,!emailMatchFlag, !dbFlag && passMatchFlag && emailMatchFlag);
@@ -83,14 +82,6 @@ public class UserSignup extends HttpServlet{
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)throws IOException, ServletException{
         doPost(request, response);
-        /*
-        System.out.println("Do get of UserLogin");
-        HttpSession curSession=request.getSession(false);
-        if(curSession==null){
-            response.sendRedirect("signup.html");
-        }else{
-            response.sendRedirect("userdetails");
-        }
-        */
+ 
     } 
 }

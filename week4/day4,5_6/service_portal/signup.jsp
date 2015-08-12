@@ -42,7 +42,7 @@
 								<td colspan="2" align="center"><input class="submit_button" type="submit" value="Create an Account" /></td> 
 							</tr> 
 							<tr> 
-								<td class="ref" colspan="2" align="center"><a href="login.html">Have an account already?</a></td> 
+								<td class="ref" colspan="2" align="center"><a href="login.jsp">Have an account already?</a></td> 
 							</tr> 
 						</tbody> 
 					</table>

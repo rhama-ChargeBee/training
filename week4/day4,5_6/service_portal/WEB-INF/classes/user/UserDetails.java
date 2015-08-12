@@ -2,10 +2,6 @@ package user;
 
 import java.sql.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
@@ -41,11 +37,11 @@ public class UserDetails extends HttpServlet{
 	private DetailsBean getDetails(Cookie[] allCookies) throws ClassNotFoundException, SQLException, Exception{
 		System.err.println("Entering GetDetails!!!!");
 		setUserId( getCookie(allCookies, "user_id").getValue() ); 
-		DbConnection newConnection= new DbConnection();
-		ResultSet rs= newConnection.getUserDetails(getUserId());
+		DbConnection.connect();
+		ResultSet rs= DbConnection.getUserDetails(getUserId());
 		DetailsBean details=new DetailsBean();
 		details.setInBean(rs);
-		newConnection.closeConnection();
+		DbConnection.closeConnection();
 		return details;
 	}
 

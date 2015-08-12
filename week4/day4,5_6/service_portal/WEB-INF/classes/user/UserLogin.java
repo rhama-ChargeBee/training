@@ -2,8 +2,8 @@ package user;
 
 import java.sql.*;
 import java.io.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
@@ -44,25 +44,25 @@ public class UserLogin extends HttpServlet {
         response.addCookie(userIdCookie);
     }
 
-    public static byte[] decrypt(byte[] s) throws Exception {
+    public static String decrypt(byte[] s) throws Exception {
        byte[] key = "1q2w3e4r5t6y7u8i".getBytes("ASCII");
        Cipher cipherAlgo = Cipher.getInstance("AES");
        SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
        cipherAlgo.init(Cipher.DECRYPT_MODE, keySpec);
        byte[] data = cipherAlgo.doFinal(s);
-       return data;
+       return new String(data);
     }
 
     private boolean getLoginConformation(HttpServletResponse response)throws Exception{
-        DbConnection newConnection= new DbConnection();
-        ResultSet rs= newConnection.getUserLogin(getFormEmail());
+        DbConnection.connect();
+        ResultSet rs= DbConnection.getUserLogin(getFormEmail());
 
         boolean flag=false;
         conformation="emailNotExists";
 
         while(rs.next()){
             conformation="emailExists";
-            if(rs.getString("password").equals(getFormPass()) ){
+            if(decrypt(rs.getBytes("password")).equals(getFormPass()) ){
                 flag=true;
                 setId(rs.getInt("id"));
                 setCookie(response);
@@ -71,7 +71,7 @@ public class UserLogin extends HttpServlet {
             }
         }
         rs.close();
-        newConnection.closeConnection();
+        DbConnection.closeConnection();
         return flag;
     }
 
@@ -109,15 +109,3 @@ public class UserLogin extends HttpServlet {
         }
     }
 }
-    /*
-    @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response)throws IOException, ServletException{
-        System.out.println("Do get of UserLogin");
-        HttpSession curSession=request.getSession(false);
-        if(curSession==null){
-            response.sendRedirect("login.html");
-        }else{
-            response.sendRedirect("userdetails");
-        }
-    } 
-    */
