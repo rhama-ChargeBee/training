@@ -1,7 +1,5 @@
 package user;
 
-import java.util.*;
-import java.sql.*;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,25 +8,15 @@ import javax.servlet.http.*;
 
 
 public class UserSignup extends HttpServlet{
-    private Connection con;
-    private Map < String,String[]> formParameters=null;
+    private DetailsBean details=new DetailsBean();
+    private DbConnection dbCon;
     private boolean emailMatchFlag;
     private boolean passMatchFlag;
     private boolean dbFlag= false;
-    private int id;
-
-    private void setId(int id){
-        this.id=id;
-    }
-
-    private int getId(){
-        return id;
-    }
-
 
     private void setEmailMatchFlag(){
-        String emailStr=formParameters.get("email")[0];
-        String cemailStr=formParameters.get("cemail")[0];
+        String emailStr=details.getEmail();
+        String cemailStr=details.getCemail();
         emailMatchFlag=false;
         if( cemailStr.equals(emailStr) ){
             emailMatchFlag=true;
@@ -36,57 +24,22 @@ public class UserSignup extends HttpServlet{
     }
 
     private void setPassMatchFlag(){
-        String passStr=formParameters.get("pass")[0];
-        String cpassStr=formParameters.get("cpass")[0];
+        String passStr=details.getPass();
+        String cpassStr=details.getCpass();
         passMatchFlag=false;
         if( passStr.equals(cpassStr) ){
             passMatchFlag=true;
         }
     }
 
-    private void openDb()throws Exception{
-        Class.forName("com.mysql.jdbc.Driver");
-        String connectionUrl = "jdbc:mysql://localhost/self_service_portal";
-        con = DriverManager.getConnection(connectionUrl,"root", "");
-    }
-
-    private void insertIntoTable()throws Exception{
-        String sqlInsertLogin="insert into user_login values(null, ?,?);";
-        PreparedStatement newRowLogin = con.prepareStatement(sqlInsertLogin);
-        newRowLogin.setString(1,formParameters.get("email")[0]);
-        newRowLogin.setString(2,formParameters.get("pass")[0]);
-        newRowLogin.executeUpdate();
-
-        String sqlQuery="select id from user_login where email like ?;";
-        PreparedStatement getId= con.prepareStatement(sqlQuery);
-        getId.setString(1,formParameters.get("email")[0]);
-        ResultSet rs= getId.executeQuery();
-        rs.next();
-        setId(rs.getInt("id"));
-
-        String sqlInsertDetails="insert into user_details(fname, lname, user_id) values(?,?,?);";
-        PreparedStatement newRowDetails = con.prepareStatement(sqlInsertDetails);
-        newRowDetails.setString(1,formParameters.get("fname")[0]);
-        newRowDetails.setString(2,formParameters.get("lname")[0]);
-        newRowDetails.setInt(3,getId() );
-        //newRowDetails.setInt(4,"");
-        newRowDetails.executeUpdate();
-    }
-
     public boolean getSignupConformation()throws Exception{
-        openDb();
-        String sql= "select count(id) as user from user_login where email like ? ;";
-        PreparedStatement userRow = con.prepareStatement(sql);
-        userRow.setString(1,formParameters.get("email")[0]);
-        ResultSet rs= userRow.executeQuery();
+        int users= dbCon.userCount(details.getEmail());
         boolean flag=false;
-        rs.next();
-        if(rs.getInt("user")==0 ){
+        if(users==0 ){
             flag=true;
-            insertIntoTable();
+            dbCon.insertUser(details);
         }
-        rs.close();
-        con.close();
+        dbCon.closeConnection();
         return flag;
     }
 
@@ -100,27 +53,44 @@ public class UserSignup extends HttpServlet{
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)throws IOException, ServletException{
-        formParameters=request.getParameterMap();
-        
-        try {
-            setFlags();
-            if(dbFlag){
-                response.sendRedirect("login.html");
-                return;
-            }else{
-                SignupFlags flags= new SignupFlags(!passMatchFlag,!emailMatchFlag, !dbFlag);
-                request.setAttribute("flags", flags);
-                RequestDispatcher dispatcher =getServletContext().getRequestDispatcher("/signup.jsp");
-                dispatcher.forward(request,response);
+        try{
+            HttpSession curSession=request.getSession(false);
+            if(curSession.getAttribute("user_id")==null){
+                try {
+                    dbCon= new DbConnection();
+                    details.setInBean(request);
+                    setFlags();
+                    if(dbFlag){
+                        response.sendRedirect("login.html");
+                        return;
+                    }else{
+                        SignupFlags flags= new SignupFlags(!passMatchFlag,!emailMatchFlag, !dbFlag && passMatchFlag && emailMatchFlag);
+                        request.setAttribute("flags", flags);
+                        RequestDispatcher dispatcher =getServletContext().getRequestDispatcher("/signup.jsp");
+                        dispatcher.forward(request,response);
+                    }
+                } catch (Exception e) {
+                    System.err.println(e);
+                    e.printStackTrace();
+                }
+            } else{
+                response.sendRedirect("userdetails");
             }
-        } catch (Exception ex) {
-            Logger.getLogger(UserSignup.class.getName()).log(Level.SEVERE, null, ex);
+        }catch(NullPointerException e){
+            response.sendRedirect("signup.jsp");
+        }      
+    }
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response)throws IOException, ServletException{
+        doPost(request, response);
+        /*
+        System.out.println("Do get of UserLogin");
+        HttpSession curSession=request.getSession(false);
+        if(curSession==null){
+            response.sendRedirect("signup.html");
+        }else{
+            response.sendRedirect("userdetails");
         }
-
-        
-    } 
-    @Override  
-    public void doGet(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {  
-        doPost(req, resp);  
+        */
     } 
 }

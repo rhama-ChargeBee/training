@@ -1,3 +1,4 @@
+
 <html>
 	<head>
 		<title>User Details</title>
@@ -16,7 +17,6 @@
 			</div>
 			<font>
 				<br><br><br>
-				<form method="post" action="useredit">
 				<center>
 					<table class="noborder_table">
 						<thead>
@@ -42,14 +42,19 @@
 							<tr> 
 								<td>
 								</td> 
-								<td> 
-									<input class="submit_button" type="submit" value="Edit Details" /> 
+								<td> <button onclick="redirect()" name="submit_button" class="submit_button" type="button">Edit Details</button>
 								</td> 
 							</tr> 
 						</tbody> 
 					</table> 
-				</center> 
-			</form> 
-		</font> 
+				</center>  
+		</font>
+		
+		<script>
+			function redirect() {
+				document.cookie="page=fromDetails";
+    			window.location="userdetails";
+			}
+		</script>
 	</body> 
 </html>

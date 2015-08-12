@@ -43,25 +43,11 @@
                         </tr>
                         <tr>
                             <td class="label">Address:</td>
-                            <td colspan="2"><input type="text" name="address_line1" size=59 value=<% out.println("\""+(String)request.getAttribute("address")+"\""); %> placeholder="Address Line 1" required /></td>
+                            <td colspan="2"><input type="text" name="address_line1" size=59 value=<% out.println("\""+(String)request.getAttribute("address")+"\""); %> placeholder="Address" required /></td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td colspan="2"><input type="text" name="address_line2" size=59 value="###cookie ###" placeholder="Address Line 2" /></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><input type="text" name="city" size=25 value="###cookie ###" placeholder="City" /></td>
-                            <td><input type="text" name="state" size=25 value="###cookie ###" placeholder="State" /></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td><input type="text" name="zip" size=25 value="###cookie ###" placeholder="zip" /></td>
-                            <td><input type="text" name="country" size=25 value="###cookie ###" placeholder="Country" /></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td align="center"><input class="submit_button" type="submit" value="Save Details" /></td>
+                            <td align="center"><input name="submit_button" class="submit_button" type="submit" value="Save Details" /></td>
                             <td align="center"><input class="reset_button" type="reset" value="Reset Details" /></td>
                         </tr>
                     </tbody>

@@ -1,78 +1,103 @@
 package user;
 
-import java.util.*;
 import java.sql.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
 public class UserDetails extends HttpServlet{
-	private Map <String, String> userDetails= new HashMap <String, String>();
+	private int userId;
+	private String page;
 
-	
-	private String getFname(){
-		return userDetails.get("fname");
+
+	private void setUserId(String userId){
+		this.userId=Integer.parseInt(userId);
 	}
-	private String getLname(){
-		return userDetails.get("lname");
+	private void setPage(String page){
+		this.page=page;
 	}
-	private String getAddress(){
-		try{
-		if(userDetails.get("address").equals("")){
-			return "-- NA --";
+
+	private int getUserId(){
+		return userId;
+	}
+	private String getPage(){
+		return page;
+	}
+
+	private Cookie getCookie(Cookie[] allCookies, String cookieName){
+		Cookie val=null;
+		for(Cookie cookie: allCookies){
+			if(cookie.getName().equals(cookieName)){
+				val=cookie;
+			}
 		}
-		else{
-			return userDetails.get("address");
-		}
-		}catch(NullPointerException e){
-			return "-- NA --";
-		}
-	}
-	private String getEmail(){
-		return userDetails.get("email");
+		return val;
 	}
 
-	private void setDetails(Cookie[] allCookies){
-		System.err.println("Entering SetDetails!!!!");
-		for (Cookie allCookie : allCookies) {
-				System.err.println("Entering loop!!!!");
-
-				System.err.println("CookieName: "+allCookie.getName());
-				System.err.println("CookieValue: "+allCookie.getValue());
-				if(allCookie.getValue()==null){
-					userDetails.put(allCookie.getName(), "");
-				}else{
-	                userDetails.put(allCookie.getName(), allCookie.getValue());
-				}
-            }
+	private DetailsBean getDetails(Cookie[] allCookies) throws ClassNotFoundException, SQLException, Exception{
+		System.err.println("Entering GetDetails!!!!");
+		setUserId( getCookie(allCookies, "user_id").getValue() ); 
+		DbConnection newConnection= new DbConnection();
+		ResultSet rs= newConnection.getUserDetails(getUserId());
+		DetailsBean details=new DetailsBean();
+		details.setInBean(rs);
+		newConnection.closeConnection();
+		return details;
 	}
 
-	private HttpServletRequest setRequestAttribute(HttpServletRequest request){
-		request.setAttribute("fname", getFname());
-		request.setAttribute("lname", getLname());
-		request.setAttribute("email", getEmail());
-		request.setAttribute("address", getAddress());
+	private HttpServletRequest setRequestAttribute(HttpServletRequest request, DetailsBean details){
+		request.setAttribute("fname", details.getFname());
+		request.setAttribute("lname", details.getLname());
+		request.setAttribute("email", details.getEmail());
+		request.setAttribute("address", details.getAddress());
 		return request;
 	}
 
 	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response)throws IOException, ServletException{
+	public void doGet(HttpServletRequest request, HttpServletResponse response)throws IOException, ServletException{
+		System.out.println("Do post of UserDetails\nPrinting the cookie names");
 		Cookie[] allCookies=request.getCookies();
+		
 		if(allCookies==null){
 			System.err.println("Problem! Check cookie.");
 		}
 		else{
-			setDetails(allCookies);
-			request=setRequestAttribute(request);
-			RequestDispatcher dispatcher =getServletContext().getRequestDispatcher("/details.jsp");
-            dispatcher.forward(request,response);
-        }
+			try{
+				HttpSession session= request.getSession(false);
+				if(session==null){
+					System.out.println("session false");
+					response.sendRedirect("login.jsp");
+					return;
+				}else{
+                    try {
+                    	setUserId(session.getAttribute("user_id").toString());
+                        request=setRequestAttribute(request, getDetails(allCookies));
+                    } catch (Exception e) {
+                        System.err.println(e);
+                        e.printStackTrace();
+                    }
+	            	System.err.println("Logged in Redirecting to jsp....");
+	            	setPage(getCookie(allCookies, "page").getValue());
+					if(getPage().equals("fromLogin")|| getPage().equals("fromDetailsEdit") ){
+						RequestDispatcher dispatcher =getServletContext().getRequestDispatcher("/details.jsp");
+	            		dispatcher.forward(request,response);
+	        		}else{
+	        			RequestDispatcher dispatcher =getServletContext().getRequestDispatcher("/detailsedit.jsp");
+	            		dispatcher.forward(request,response);
+	        		}
+	        	}
+	        }catch(NullPointerException e){
+	        	response.sendRedirect("login.jsp");
+	        }
+    	}
 	}
-
-	@Override  
-    public void doGet(HttpServletRequest req, HttpServletResponse resp)throws ServletException, IOException {  
-        doPost(req, resp);  
-    }
+	/*
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response)throws IOException, ServletException{
+		doPost(request,response);
+	}*/
 }

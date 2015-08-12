@@ -1,4 +1,8 @@
 <%@page import="user.SignupFlags"%>
+
+<% if(session.getAttribute("user_id")!=null ){
+	response.sendRedirect("userdetails");
+} %>
 <% SignupFlags flags=(SignupFlags)request.getAttribute("flags"); %>
 <html> 
 	<head> 
@@ -45,32 +49,34 @@
 				</center>
 			</form>
 
+			
+	
+			<% if(flags!=null){ %>
 			<script> 
-			//var myNewVariable = "${flags}";
-			//console.log("ff");
-			//window.alert("3>2");
-			if(<%=flags.getPassFlag1()%>){
+				if(<%=flags.getPassFlag1()%>){
 
-				document.getElementsByName("pass")[0].className = "changeRed"; 
-				document.getElementsByName("pass")[0].placeholder = "Passwords do Not Match!"; 
-				document.getElementsByName("pass")[0].style.borderColor= 'red'; 
-				document.getElementsByName("cpass")[0].className = "changeRed"; 
-				document.getElementsByName("cpass")[0].placeholder = "Passwords do Not Match!"; 
-				document.getElementsByName("cpass")[0].style.borderColor = 'red'; 
-			} 
+					document.getElementsByName("pass")[0].className = "changeRed"; 
+					document.getElementsByName("pass")[0].placeholder = "Passwords do Not Match!"; 
+					document.getElementsByName("pass")[0].style.borderColor= 'red'; 
+					document.getElementsByName("cpass")[0].className = "changeRed"; 
+					document.getElementsByName("cpass")[0].placeholder = "Passwords do Not Match!"; 
+					document.getElementsByName("cpass")[0].style.borderColor = 'red'; 
+				} 
 
-			if(<%= flags.getEmailFlag() %>){
-				document.getElementsByName("email")[0].placeholder = "Emails do Not Match!"; 
-				document.getElementsByName("cemail")[0].placeholder = "Emails do Not Match!"; 
-				document.getElementsByName("email")[0].style.borderColor='red'; 
-				document.getElementsByName("cemail")[0].style.borderColor='red'; 
-				document.getElementsByName("email")[0].className = "changeRed";
-				document.getElementsByName("cemail")[0].className = "changeRed";  
-			}
-			if(<%= flags.getDbFlagNot() %>){
-				document.getElementsByName("start_para")[0].innerHTML="This EmailId has already been registed.";
-			}
+				if(<%= flags.getEmailFlag() %>){
+					document.getElementsByName("email")[0].placeholder = "Emails do Not Match!"; 
+					document.getElementsByName("cemail")[0].placeholder = "Emails do Not Match!"; 
+					document.getElementsByName("email")[0].style.borderColor='red'; 
+					document.getElementsByName("cemail")[0].style.borderColor='red'; 
+					document.getElementsByName("email")[0].className = "changeRed";
+					document.getElementsByName("cemail")[0].className = "changeRed";  
+				}
+				if(<%= flags.getDbFlagNot() %>){
+					document.getElementsByName("start_para")[0].innerHTML="This EmailId has already been registed.";
+				}
 			</script> 
+			<% } %>
+			
 		</body> 
 	</html>
 
