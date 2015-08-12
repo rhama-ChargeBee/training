@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+ <servlet>
+ <servlet-name>UserContacts</servlet-name>
+ <servlet-class>user.UserContacts</servlet-class>
+ </servlet>
+
+ <servlet>
+ <servlet-name>UserSignup</servlet-name>
+ <servlet-class>user.UserSignup</servlet-class>
+ </servlet>
+
+ <servlet>
+ <servlet-name>UserLogin</servlet-name>
+ <servlet-class>user.UserLogin</servlet-class>
+ </servlet>
+
+  <servlet>
+ <servlet-name>UserDetails</servlet-name>
+ <servlet-class>user.UserDetails</servlet-class>
+ </servlet>
+
+ <servlet>
+ <servlet-name>Logout</servlet-name>
+ <servlet-class>user.Logout</servlet-class>
+ </servlet>
+
+ <servlet>
+ <servlet-name>Deactivate</servlet-name>
+ <servlet-class>user.Deactivate</servlet-class>
+ </servlet>
+
+ <servlet>
+ <servlet-name>SetDetails</servlet-name>
+ <servlet-class>user.SetDetails</servlet-class>
+ </servlet>
+
+  <servlet>
+ <servlet-name>EditContact</servlet-name>
+ <servlet-class>user.EditContact</servlet-class>
+ </servlet>
+
+  <servlet-mapping>
+ <servlet-name>UserContacts</servlet-name>
+ <url-pattern>/usercontacts</url-pattern>
+ </servlet-mapping>
+
+ <servlet-mapping>
+ <servlet-name>UserSignup</servlet-name>
+ <url-pattern>/usersignup</url-pattern>
+ </servlet-mapping>
+
+ <servlet-mapping>
+ <servlet-name>UserLogin</servlet-name>
+ <url-pattern>/userlogin</url-pattern>
+ </servlet-mapping>
+
+ <servlet-mapping>
+ <servlet-name>UserDetails</servlet-name>
+ <url-pattern>/userdetails</url-pattern>
+ </servlet-mapping>
+
+ <servlet-mapping>
+ <servlet-name>Logout</servlet-name>
+ <url-pattern>/logout</url-pattern>
+ </servlet-mapping> 
+
+ <servlet-mapping>
+ <servlet-name>Deactivate</servlet-name>
+ <url-pattern>/deactivate</url-pattern>
+ </servlet-mapping>
+
+
+ <servlet-mapping>
+ <servlet-name>SetDetails</servlet-name>
+ <url-pattern>/setdetails</url-pattern>
+ </servlet-mapping>
+
+  <servlet-mapping>
+ <servlet-name>EditContact</servlet-name>
+ <url-pattern>/editcontact</url-pattern>
+ </servlet-mapping>
+
+</web-app>
