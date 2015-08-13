@@ -15,7 +15,7 @@
 			<% if(conformation!=null ){ %>
 			<p class="error">Error! Enter Again</p> 
 			<% }else{ %> <br> <% } %>
-			<form method="get" action="userlogin"> 
+			<form method="post" action="userlogin"> 
 				<center> 
 					<table class="withborder_table"> 
 						<thead> 

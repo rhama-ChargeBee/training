@@ -2,6 +2,8 @@ package user;
 
 import java.io.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,9 +31,26 @@ public class UserContacts extends HttpServlet{
     }
         
     private void showAllContacts(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
-        request.setAttribute("table",DbConnection.searchByName(getUserId()));
+        request.setAttribute("table",resultSetToMap(DbConnection.searchByName(getUserId())));
         RequestDispatcher dispatcher =getServletContext().getRequestDispatcher("/contacts.jsp");
         dispatcher.forward(request,response);
+    }
+    private HashMap<String, ArrayList <String>> resultSetToMap(ResultSet rs) throws SQLException{
+        HashMap<String, ArrayList <String>> result= new HashMap<>();
+        String[] keys=new String[] {"contact_id","fname", "lname", "address_line1", "address_line2", "city", "state", "zip", "country" ,"number_type", "phone_number"};
+        for (String key : keys) {
+            result.put(key, new ArrayList <String>());
+        }
+        while(rs.next()){
+            for (String key : keys) {
+                if(key.equals("contact_id")){
+                    result.get(key).add(Integer.toString(rs.getInt(key)));
+                }else{
+                    result.get(key).add(rs.getString(key));
+                }
+            }
+        }
+        return result;
     }
 
     @Override
@@ -43,34 +62,34 @@ public class UserContacts extends HttpServlet{
         setUserId(getCookie(cookies, "user_id").getValue());
         String page=getCookie(cookies, "user_id").getValue();
         DbConnection.connect();
-        if(page.equals("fromDetails") ){
-            showAllContacts(request,response);
-            
-        }else if( page.equals("fromNewContacts") ){
-                        ContactsBean contact=new ContactsBean();
-                        contact.setContactInBean(request);
-                        DbConnection.insertNewContact(contact, getUserId());
-                        showAllContacts(request,response);
-        }
-        else{
-            
-            if(request.getParameter("searchbox")==null){
-                System.out.println("searchbox == null");
-                            request.setAttribute("table",DbConnection.searchByName(getUserId()));
+            switch (page) {
+                case "fromDetails":
+                    showAllContacts(request,response);
+                    break;
+                case "fromNewContacts":
+                    ContactsBean contact=new ContactsBean();
+                    contact.setContactInBean(request);
+                    DbConnection.insertNewContact(contact, getUserId());
+                    showAllContacts(request,response);
+                    break;
+                default:
+                    if(request.getParameter("searchbox")==null){
+                        System.out.println("searchbox == null");
+                        request.setAttribute("table",resultSetToMap(DbConnection.searchByName(getUserId())));
+                    }
+                    else if(request.getParameter("option").equals("name")){
+                        System.out.println("searchbox != null and option == name ");
+                        request.setAttribute("table",resultSetToMap(DbConnection.searchByName(getUserId(), request.getParameter("searchbox"))));
+                        
+                    }
+                    else{
+                        System.out.println("searchbox != null and option == number ");
+                        request.setAttribute("table",resultSetToMap(DbConnection.searchByNumber(getUserId(), request.getParameter("searchbox"))));
+                        
+                    }       RequestDispatcher dispatcher =getServletContext().getRequestDispatcher("/contacts.jsp");
+                    dispatcher.forward(request,response);
+                    break;
             }
-            else if(request.getParameter("option").equals("name")){
-                System.out.println("searchbox != null and option == name ");
-                            request.setAttribute("table",DbConnection.searchByName(getUserId(), request.getParameter("searchbox")));
-
-            }
-            else{
-                System.out.println("searchbox != null and option == number ");
-                            request.setAttribute("table",DbConnection.searchByNumber(getUserId(), request.getParameter("searchbox")));
-
-            }
-            RequestDispatcher dispatcher =getServletContext().getRequestDispatcher("/contacts.jsp");
-            dispatcher.forward(request,response);
-        }
         }
          else{
             response.sendRedirect("login.jsp");
@@ -81,6 +100,12 @@ public class UserContacts extends HttpServlet{
                 Logger.getLogger(UserContacts.class.getName()).log(Level.SEVERE, null, e);
         } catch (Exception e) {
                 Logger.getLogger(UserContacts.class.getName()).log(Level.SEVERE, null, e);
+        }finally{
+            try {
+                DbConnection.closeConnection();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserContacts.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     @Override
@@ -107,6 +132,12 @@ public class UserContacts extends HttpServlet{
         } catch (Exception e) {
                 System.out.println(e);
                 e.printStackTrace();
+        }finally{
+            try {
+                DbConnection.closeConnection();
+            } catch (SQLException ex) {
+                Logger.getLogger(UserContacts.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }

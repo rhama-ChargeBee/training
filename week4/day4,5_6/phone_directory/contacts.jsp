@@ -1,4 +1,4 @@
-<%@ page import="java.sql.ResultSet"%>
+<%@ page import="java.util.HashMap,java.util.ArrayList" %>
 <%  response.addCookie(new Cookie("page", "fromSearch"));%>
 <html>
     <head>
@@ -45,7 +45,6 @@
                 </table>
             </form>
                 <table class="contacts_table">
-                    <tbody>
                         <tr>
                             <th>Name</th>
                             <th>Address</th>
@@ -53,17 +52,18 @@
                             <th>Work</th>
                             <th>Home</th>
                         </tr>
-                        <% ResultSet rs= (ResultSet) request.getAttribute("table");
+                        <% 
+                        HashMap<String, ArrayList<String>> result= (HashMap<String, ArrayList<String>>) request.getAttribute("table");
                         boolean flag=true;
                         boolean trFlag=false;
                         int i=0, count=3;
-                        while(rs.next()){ 
+                        for(int k=0;k<result.get("contact_id").size(); k++){
                             flag=false;
-                            if(i!=rs.getInt("contact_id")){
+                            if(i!=Integer.parseInt(result.get("contact_id").get(k))){
                                 flag=true;
                             }
                             if(flag){
-                                i=rs.getInt("contact_id");
+                                i=Integer.parseInt(result.get("contact_id").get(k));
                                 if(trFlag){
                                     System.out.println("count final:"+count);
                                     for(int j=0;j<count; j++){
@@ -73,23 +73,24 @@
                                     count=3;
                                 }
                                 trFlag=true;
-                            %>
-                                <input type="hidden" name="contact_id" value=<% out.println("\""+rs.getInt("contact_id")+"\""); %>>
+                        %>
+                                
                             <tr style="border:none">
-                                <td> <%= rs.getString("fname")%> <%= rs.getString("lname") %></td>
-                                <td> <% if(rs.getString("address_line1")!=null){out.println(rs.getString("address_line1")+"  ");}
-                                        if(rs.getString("address_line2")!=null){out.println(rs.getString("address_line2")+"  ");}
-                                        if(rs.getString("city")!=null){out.println(rs.getString("city")+"  ");}
-                                        if(rs.getString("state")!=null){out.println(rs.getString("state")+"  ");}
-                                        if(rs.getString("country")!=null){out.println(rs.getString("country")+"  ");}
-                                        if(rs.getString("zip")!=null){out.println(rs.getString("zip")+" ");}    
-                                    %>
+                                <td> <%= result.get("fname").get(k)%> <%= result.get("lname").get(k) %></td>
+                                <td> 
+                            <% 
+                                String[] address= new String[]{"address_line1", "address_line2", "city", "state", "country", "zip"};
+                                for(int l=0;l<address.length;l++){
+                                    if(result.get(address[l]).get(k)!=null){out.println(result.get(address[l]).get(k)+"  ");}
+                                }
+                            %>
+                                </td>
                             <% }
                             if(trFlag){ 
-                                try{if(rs.getString("number_type").equals("Mobile")){
+                                try{if(result.get("number_type").get(k).equals("Mobile")){
                                 %>
                                     <td> 
-                                        <% out.println((rs.getString("phone_number")==null)? "" :  rs.getString("phone_number"));
+                                        <% out.println((result.get("phone_number").get(k)==null)? "" :  result.get("phone_number").get(k));
                                         count=count-1;
                                         System.out.println("count Mobile"+count); 
                                         %>
@@ -100,9 +101,9 @@
                                     count=count-1;
                                     System.out.println("count catch"+count); 
                                 }
-                                try{ if(rs.getString("number_type").equals("Work")){
+                                try{ if(result.get("number_type").get(k).equals("Work")){
                                 %>
-                                    <td> <% out.println((rs.getString("phone_number")==null)? "" :  rs.getString("phone_number"));
+                                    <td> <% out.println((result.get("phone_number").get(k)==null)? "" :  result.get("phone_number").get(k));
                                     count=count-1;  
                                     System.out.println("count Work"+count); 
                                     %></td>
@@ -112,9 +113,9 @@
                                     count=count-1;
                                     System.out.println("count catch"+count); 
                                 }
-                                try{if(rs.getString("number_type").equals("Home")){
+                                try{if(result.get("number_type").get(k).equals("Home")){
                                 %>
-                                    <td> <% out.println((rs.getString("phone_number")==null)? "" :  rs.getString("phone_number"));
+                                    <td> <% out.println((result.get("phone_number").get(k)==null)? "" :  result.get("phone_number").get(k));
                                     count=count-1;  
                                     System.out.println("count Home"+count); 
                                     %></td>
@@ -127,7 +128,6 @@
                             }
                             
                         } %>
-                    </tbody>
                 </table>
             </center>
     </body>
